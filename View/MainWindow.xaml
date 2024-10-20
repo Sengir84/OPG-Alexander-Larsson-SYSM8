@@ -5,12 +5,16 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:FitTracker"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800">
+        Title="MainWindow" Height="500" Width="800">
     <Grid>
         <StackPanel>
+            <Label Content="FitTrack"/>
             <TextBox Text="{Binding Username}"/>
+            <TextBox Text="{Binding Password}"/>
+            <Button Content="Sign in" Command="{Binding SignInCommand}"/>
             <Button Content="Register" Command="{Binding RegisterCommand}" />
-            
+            <Button Content="Forgot Password" Command="{Binding PasswordReset}"/>
+
 
         </StackPanel>
     </Grid>
