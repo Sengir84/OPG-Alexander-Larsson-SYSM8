@@ -1,4 +1,5 @@
-﻿using System;
+﻿
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
@@ -10,7 +11,6 @@ namespace FitTracker.MVVM
 {
     public class ViewModelBase : INotifyPropertyChanged
     {
-
         public event PropertyChangedEventHandler? PropertyChanged;
 
         public void OnPropertyChanged([CallerMemberName] string? propertyName = null)
@@ -18,4 +18,6 @@ namespace FitTracker.MVVM
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
     }
+
+    
 }

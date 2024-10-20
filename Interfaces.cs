@@ -100,5 +100,7 @@ namespace FitTracker
         public string CountryComboBox { get; set; }
         public void SaveUserDetails();
         public void Cancel();
+
+    
     }
 }

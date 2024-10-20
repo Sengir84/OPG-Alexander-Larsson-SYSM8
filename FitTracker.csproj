@@ -8,8 +8,4 @@
     <UseWPF>true</UseWPF>
   </PropertyGroup>
 
-  <ItemGroup>
-    <Folder Include="ViewModel%28Länk logik%29\" />
-  </ItemGroup>
-
 </Project>

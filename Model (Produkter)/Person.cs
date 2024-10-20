@@ -6,7 +6,11 @@ using System.Threading.Tasks;
 
 namespace FitTracker.Model__Produkter_
 {
-    internal class Person
+    public abstract class Person
     {
+        public string Username { get; set; }
+        public string Password { get; set; }
+        public abstract void SignIn();
     }
+    
 }
