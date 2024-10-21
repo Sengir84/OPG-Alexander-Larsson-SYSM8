@@ -1,4 +1,5 @@
-﻿using System;
+﻿using FitTracker.ViewModel_Länk_logik_;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -22,6 +23,27 @@ namespace FitTracker.View__UI_
         public RegisterWindow()
         {
             InitializeComponent();
+            RegisterWindowViewModel registerWindow = new RegisterWindowViewModel();
+            DataContext = registerWindow;
+        }
+
+        private void PasswordBox_PasswordChanged(object sender, RoutedEventArgs e)
+        {
+            if (DataContext is RegisterWindowViewModel viewModel)
+            {
+                var passwordBox = sender as PasswordBox;
+                viewModel.PasswordInput = passwordBox.Password;
+            }
+            
+        }
+
+        private void ConfirmPasswordBox_PasswordChanged(object sender, RoutedEventArgs e)
+        {
+            if (DataContext is RegisterWindowViewModel viewModel)
+            {
+                var passwordBox = sender as PasswordBox;
+                viewModel.ConfirmPasswordInput = passwordBox.Password;
+            }
         }
     }
 }

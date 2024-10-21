@@ -11,14 +11,49 @@ using System.Linq;
 using System.Security.Cryptography.X509Certificates;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Input;
+using System.Xml.Linq;
 
 namespace FitTracker.ViewModel_Länk_logik_
 {
     public class MainWindowViewModel : ViewModelBase, IMainWindow
     {
-        public ObservableCollection<User> Users { get; set; }
+        
+        
+        public string LabelTitle { get; set; }
 
+        //Fields till Password
+        private string passwordInput;
+        public string PasswordInput
+        {
+            get { return passwordInput; }
+            set
+            {
+                if (passwordInput != value)
+                {
+                    passwordInput = value;
+                    OnPropertyChanged(nameof(PasswordInput));
+                }
+            }
+        }
+        //Fields till Username
+        private string usernameInput;
+        public string UsernameInput
+        {
+            get { return usernameInput; }
+            set
+            {
+                usernameInput = value;
+                OnPropertyChanged(nameof(UsernameInput));
+            }
+        }
+        
+
+        
+
+        //Commands att binda till xaml
         private RelayCommand registerCommand;
         public RelayCommand RegisterCommand
         {
@@ -31,55 +66,49 @@ namespace FitTracker.ViewModel_Länk_logik_
                 return registerCommand;
             }
         }
-
+        //Metod till MVVM command
         private void ExecuteRegister(object parameter)
         {
             Register();
         }
-        public string LabelTitle {  get; set; }
-
-        private string usernameInput;
-        public string UsernameInput
-        {
-            get {return usernameInput; }
-            set
-            {
-                usernameInput = value;
-                OnPropertyChanged();
-            }
-        }
-
-        private string passwordInput;
-
-        
-        public string PasswordInput 
-        {
-            get { return passwordInput; }
-            set
-            {
-                if (passwordInput != value)
-                {
-                    passwordInput = value;
-                    OnPropertyChanged();
-                }
-            }
-        }
-
-        
-
+        //Metod för att öppna Registerfönstret och stänga MainWindow
         public void Register()
         {
+
             var registerWindow = new RegisterWindow();
             registerWindow.Show();
+            App.Current.Windows[0].Close();
         }
-
-        public void SignIn()
-        {
-            throw new NotImplementedException();
-        }
-
-
 
         
+        //Sign in commands att binda till xaml
+        private RelayCommand signInCommand;
+        public RelayCommand SignInCommand
+        {
+            get
+            {
+                if (signInCommand == null)
+                {
+                    signInCommand = new RelayCommand(ExecuteSignIn);
+                }
+                return signInCommand;
+            }
+        }
+        
+
+        //Metod för att öpnna workout window och stänga main window
+        public void SignIn()
+        {
+           
+                    var workoutWindow = new WorkoutWindow();
+                    workoutWindow.Show();
+                    App.Current.Windows[0].Close();
+                
+        }
+            //Metod till MVVM command
+            private void ExecuteSignIn(object parameter)
+        {
+            SignIn();
+        }
     }
 }

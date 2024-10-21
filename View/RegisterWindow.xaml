@@ -3,10 +3,29 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:FitTracker.View__UI_"
+        xmlns:local="clr-namespace:FitTracker.View__UI_" xmlns:viewmodel_länk_logik_="clr-namespace:FitTracker.ViewModel_Länk_logik_" d:DataContext="{d:DesignInstance Type=viewmodel_länk_logik_:MainWindowViewModel}"
         mc:Ignorable="d"
         Title="RegisterWindow" Height="450" Width="800">
     <Grid>
-        <TextBlock Text="REGISTER" FontSize="80"/>
+        <StackPanel>
+            <TextBlock Text="REGISTER" FontSize="80"/>
+            <TextBox Text="{Binding UsernameInput, UpdateSourceTrigger=PropertyChanged}"/>
+            <PasswordBox PasswordChanged="PasswordBox_PasswordChanged"/>
+            <PasswordBox PasswordChanged="ConfirmPasswordBox_PasswordChanged"/>
+            <ComboBox ItemsSource="{Binding Countries}" SelectedItem="{Binding CountryComboBox}"/>
+            <Button Content="Register" Command="{Binding AddUserCommand}" Height="20"/>
+            <ListBox ItemsSource="{Binding Users}">
+                <ListBox.ItemTemplate>
+                    <DataTemplate>
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock Text="{Binding Username}" />
+                            <TextBlock Text=" - " />
+                            <TextBlock Text="{Binding CountryComboBox}" />
+                        </StackPanel>
+                    </DataTemplate>
+                </ListBox.ItemTemplate>
+            </ListBox>
+        </StackPanel>
+        
     </Grid>
 </Window>

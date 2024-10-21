@@ -40,5 +40,9 @@ namespace FitTracker.MVVM
         {
             execute(parameter);
         }
+        public void RaiseCanExecuteChanged()
+        {
+            CommandManager.InvalidateRequerySuggested();
+        }
     }
 }
