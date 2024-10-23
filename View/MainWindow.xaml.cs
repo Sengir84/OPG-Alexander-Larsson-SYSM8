@@ -24,5 +24,15 @@ namespace FitTracker
             MainWindowViewModel mainWindowViewModel = new MainWindowViewModel(UserManager.Instance);
             DataContext = mainWindowViewModel;
         }
+
+        private void PasswordInput(object sender, RoutedEventArgs e)
+        {
+            if (DataContext is MainWindowViewModel viewModel)
+            {
+                var passwordBox = sender as PasswordBox;
+                viewModel.PasswordInput = passwordBox.Password;
+            }
+
+        }
     }
 }

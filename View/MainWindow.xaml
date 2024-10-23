@@ -10,7 +10,7 @@
         <StackPanel>
             <Label Content="FitTrack"/>
             <TextBox Text="{Binding UsernameInput}"/>
-            <TextBox Text="{Binding PasswordInput}"/>
+            <PasswordBox PasswordChanged="PasswordInput"/>
             <Button Content="Sign in" Command="{Binding SignInCommand}"/>
             <Button Content="Register" Command="{Binding RegisterCommand}" />
             <Button Content="Forgot Password" Command="{Binding PasswordReset}"/>

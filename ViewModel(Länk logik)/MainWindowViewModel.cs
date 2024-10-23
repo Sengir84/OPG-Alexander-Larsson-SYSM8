@@ -21,7 +21,7 @@ namespace FitTracker.ViewModel_Länk_logik_
     public class MainWindowViewModel : ViewModelBase, IMainWindow
     {
         private UserManager userManager;
-        
+        public RelayCommand AddUserCommand { get; }
         public string LabelTitle { get; set; }
 
         //Fields till PasswordInput textbox
@@ -35,6 +35,7 @@ namespace FitTracker.ViewModel_Länk_logik_
                 {
                     passwordInput = value;
                     OnPropertyChanged(nameof(PasswordInput));
+                    SignInCommand.RaiseCanExecuteChanged();
                 }
             }
         }
