@@ -14,13 +14,13 @@ namespace FitTracker.Model__Produkter_
 
         public User() { }
 
-        public User (string username, string password, string country) : base ()
+        public User (string username, string password, string country, string securityQuestion, string securityAnswer) : base ()
         {
             Username = username;
             Password = password;
             Country = country;
-            //SecurityQuestion = securityQuestion;
-            //SecurityAnswer = securityAnswer;
+            SecurityQuestion = securityQuestion;
+            SecurityAnswer = securityAnswer;
         }
 
         public void ResetPassword(string securityAnswer)

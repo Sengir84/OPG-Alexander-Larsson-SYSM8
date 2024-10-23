@@ -104,7 +104,7 @@ namespace FitTracker.ViewModel_Länk_logik_
             public void SignIn()
         {
             var userExists = userManager.Users.Any(u => u.Username == UsernameInput && u.Password == PasswordInput);
-            MessageBox.Show($"UsernameInput: {UsernameInput}, PasswordInput: {PasswordInput}, users in list {userManager.Users.Count} UserExists: {userExists}");
+            MessageBox.Show($"UsernameInput: {UsernameInput}, PasswordInput: {PasswordInput}, users in list {userManager.Users.Count} UserExists: {userExists}" );
 
             if (userManager.Users.Any(u => u.Username == UsernameInput && u.Password == PasswordInput))
 

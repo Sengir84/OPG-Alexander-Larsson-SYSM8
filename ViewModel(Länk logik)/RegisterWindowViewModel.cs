@@ -18,7 +18,7 @@ namespace FitTracker.ViewModel_Länk_logik_
     {
         private UserManager userManager;
         public ObservableCollection<string> Countries { get; set; }
-        
+        public ObservableCollection<string> SecurityQuestionList { get; set; }
 
         private string usernameInput;
         public string UsernameInput
@@ -45,7 +45,19 @@ namespace FitTracker.ViewModel_Länk_logik_
                 }
             }
         }
-        
+        private string securityQuestion;
+        public string SecurityQuestion
+        {
+            get { return securityQuestion; }
+            set
+            {
+                if (securityQuestion != value)
+                {
+                    securityQuestion = value;
+                    OnPropertyChanged(nameof(SecurityQuestion));
+                }
+            }
+        }
         private string passwordInput;
         public string PasswordInput
         {
@@ -74,6 +86,16 @@ namespace FitTracker.ViewModel_Länk_logik_
                 }
             }
         }
+        private string securityAnswer;
+        public string SecurityAnswer
+        {
+            get { return securityAnswer; }
+            set
+            {
+                securityAnswer = value;
+                OnPropertyChanged(nameof(SecurityAnswer));
+            }
+        }
         public RelayCommand AddUserCommand { get; }
 
         public RegisterWindowViewModel() : this(UserManager.Instance) { }
@@ -90,13 +112,19 @@ namespace FitTracker.ViewModel_Länk_logik_
                 "Finland",
                 "Nordpolen"
             };
-            
+            SecurityQuestionList = new ObservableCollection<string>
+            {
+                "Vad hette ditt första husdjur?",
+                "I vilken stad föddes du?",
+                "Vem är din favoritkaraktär i Bolibumpa"
+            };
         }
 
        
         private bool CanRegisterNewUser(object arg)
         {
-            return !string.IsNullOrWhiteSpace(UsernameInput) && !string.IsNullOrWhiteSpace(PasswordInput) &&!string.IsNullOrEmpty(ConfirmPasswordInput) && CountryComboBox != null;
+            return !string.IsNullOrWhiteSpace(UsernameInput) && !string.IsNullOrWhiteSpace(PasswordInput) 
+                && !string.IsNullOrEmpty(ConfirmPasswordInput) && CountryComboBox != null ;
         }
         
         private void ExecuteRegisterNewUser(object obj)
@@ -107,9 +135,8 @@ namespace FitTracker.ViewModel_Länk_logik_
         {
             if (PasswordInput == ConfirmPasswordInput)
             {
-                userManager.AddUser(UsernameInput, passwordInput, CountryComboBox);
-                MessageBox.Show($"Användare registrerad ");
-
+                userManager.AddUser(UsernameInput, passwordInput, CountryComboBox, SecurityQuestion, SecurityAnswer);
+                MessageBox.Show($"UsernameInput: {UsernameInput}, PasswordInput: {PasswordInput}, users in list {userManager.Users.Count} Question: {securityQuestion} answer{securityAnswer}");
                 var mainWindowViewModel = new MainWindowViewModel(UserManager.Instance);
                 var mainWindow = new MainWindow { DataContext = mainWindowViewModel };
                 mainWindow.Show();

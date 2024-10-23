@@ -13,18 +13,10 @@
             <PasswordBox PasswordChanged="PasswordBox_PasswordChanged"/>
             <PasswordBox PasswordChanged="ConfirmPasswordBox_PasswordChanged"/>
             <ComboBox ItemsSource="{Binding Countries}" SelectedItem="{Binding CountryComboBox}"/>
+            <ComboBox ItemsSource="{Binding SecurityQuestionList}" SelectedItem="{Binding SecurityQuestion}"/>
+            <TextBox Text="{Binding SecurityAnswer}"/>
             <Button Content="Register" Command="{Binding AddUserCommand}" Height="20"/>
-            <ListBox ItemsSource="{Binding Users}">
-                <ListBox.ItemTemplate>
-                    <DataTemplate>
-                        <StackPanel Orientation="Horizontal">
-                            <TextBlock Text="{Binding Username}" />
-                            <TextBlock Text=" - " />
-                            <TextBlock Text="{Binding CountryComboBox}" />
-                        </StackPanel>
-                    </DataTemplate>
-                </ListBox.ItemTemplate>
-            </ListBox>
+            
         </StackPanel>
         
     </Grid>
