@@ -1,4 +1,5 @@
-﻿using FitTracker.ViewModel_Länk_logik_;
+﻿using FitTracker.Model__Produkter_;
+using FitTracker.ViewModel_Länk_logik_;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -23,7 +24,8 @@ namespace FitTracker.View__UI_
         public RegisterWindow()
         {
             InitializeComponent();
-            RegisterWindowViewModel registerWindow = new RegisterWindowViewModel();
+            UserManager userManager = new UserManager();
+            RegisterWindowViewModel registerWindow = new RegisterWindowViewModel(userManager);
             DataContext = registerWindow;
         }
 

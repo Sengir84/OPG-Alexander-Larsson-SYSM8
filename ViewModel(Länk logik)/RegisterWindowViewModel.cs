@@ -1,5 +1,6 @@
 ﻿using FitTracker.Model__Produkter_;
 using FitTracker.MVVM;
+using FitTracker.View__UI_;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -14,8 +15,10 @@ namespace FitTracker.ViewModel_Länk_logik_
 {
     public class RegisterWindowViewModel : ViewModelBase, IRegisterWindow
     {
+        private UserManager userManager;
         public ObservableCollection<string> Countries { get; set; }
-        public ObservableCollection<User> Users { get; set; }
+        
+
         private string usernameInput;
         public string UsernameInput
         {
@@ -71,10 +74,11 @@ namespace FitTracker.ViewModel_Länk_logik_
             }
         }
         public RelayCommand AddUserCommand { get; }
-        public RegisterWindowViewModel()
+        public RegisterWindowViewModel(UserManager userManager)
         {
-            Users = new ObservableCollection<User>();
-            AddUserCommand = new RelayCommand(AddUser, CanAddUser);
+            this.userManager = userManager;
+
+            AddUserCommand = new RelayCommand(ExecuteRegisterNewUser, CanRegisterNewUser);
             Countries = new ObservableCollection<string>
             {
                 "Sverige",
@@ -83,22 +87,36 @@ namespace FitTracker.ViewModel_Länk_logik_
                 "Finland",
                 "Nordpolen"
             };
+            
         }
 
-        private bool CanAddUser(object arg)
+       
+        private bool CanRegisterNewUser(object arg)
         {
-            return !string.IsNullOrWhiteSpace(UsernameInput) && !string.IsNullOrWhiteSpace(PasswordInput) &&!string.IsNullOrEmpty(ConfirmPasswordInput) && PasswordInput == ConfirmPasswordInput;
+            return !string.IsNullOrWhiteSpace(UsernameInput) && !string.IsNullOrWhiteSpace(PasswordInput) &&!string.IsNullOrEmpty(ConfirmPasswordInput) && CountryComboBox != null;
         }
-
-        private void AddUser(object obj)
+        
+        private void ExecuteRegisterNewUser(object obj)
         {
-            Users.Add(new User { Username = UsernameInput, Password = PasswordInput });
-            UsernameInput = string.Empty;
-            PasswordInput = string.Empty;
+            RegisterNewUser();
         }
-            public void RegisterNewUser()
+        public void RegisterNewUser()
         {
-            throw new NotImplementedException();
+           
+            if (passwordInput == ConfirmPasswordInput)
+            {
+                userManager.AddUser(UsernameInput, PasswordInput, CountryComboBox);
+                MessageBox.Show("Användare registrerad, du kan nu logga in");
+                
+                var Mainwindow = new MainWindow();
+                Mainwindow.Show();
+                App.Current.Windows[0].Close();
+                
+            }
+            else
+            {
+                MessageBox.Show("Lösenord stämmer inte överens");
+            }
         }
 
     }

@@ -8,9 +8,9 @@ namespace FitTracker.Model__Produkter_
 {
     public class User : Person ,IUser
     {
-        public string Country { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
-        public string SecurityQuestion { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
-        public string SecurityAnswer { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
+        public string Country { get; set; }
+        public string SecurityQuestion {  get; set; }
+        public string SecurityAnswer { get; set; }
 
         public void ResetPassword(string securityAnswer)
         {

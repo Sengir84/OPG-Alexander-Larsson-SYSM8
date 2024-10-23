@@ -20,11 +20,11 @@ namespace FitTracker.ViewModel_Länk_logik_
 {
     public class MainWindowViewModel : ViewModelBase, IMainWindow
     {
-        
+        private UserManager userManager;
         
         public string LabelTitle { get; set; }
 
-        //Fields till Password
+        //Fields till PasswordInput textbox
         private string passwordInput;
         public string PasswordInput
         {
@@ -38,7 +38,7 @@ namespace FitTracker.ViewModel_Länk_logik_
                 }
             }
         }
-        //Fields till Username
+        //Fields till UsernameInput textbox
         private string usernameInput;
         public string UsernameInput
         {
@@ -99,11 +99,13 @@ namespace FitTracker.ViewModel_Länk_logik_
         //Metod för att öpnna workout window och stänga main window
         public void SignIn()
         {
-           
-                    var workoutWindow = new WorkoutWindow();
-                    workoutWindow.Show();
-                    App.Current.Windows[0].Close();
-                
+            if (userManager.Users.Any(u => u.Username == UsernameInput)
+
+            {
+                var workoutWindow = new WorkoutWindow();
+                workoutWindow.Show();
+                App.Current.Windows[0].Close();
+            }   
         }
             //Metod till MVVM command
             private void ExecuteSignIn(object parameter)
