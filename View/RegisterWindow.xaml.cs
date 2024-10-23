@@ -24,9 +24,8 @@ namespace FitTracker.View__UI_
         public RegisterWindow()
         {
             InitializeComponent();
-            UserManager userManager = new UserManager();
-            RegisterWindowViewModel registerWindow = new RegisterWindowViewModel(userManager);
-            DataContext = registerWindow;
+            RegisterWindowViewModel registerWindowViewModel = new RegisterWindowViewModel(UserManager.Instance);
+            DataContext = registerWindowViewModel;
         }
 
         private void PasswordBox_PasswordChanged(object sender, RoutedEventArgs e)

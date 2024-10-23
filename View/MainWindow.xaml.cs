@@ -1,4 +1,5 @@
-﻿using FitTracker.ViewModel_Länk_logik_;
+﻿using FitTracker.Model__Produkter_;
+using FitTracker.ViewModel_Länk_logik_;
 using System.Text;
 using System.Windows;
 using System.Windows.Controls;
@@ -20,9 +21,8 @@ namespace FitTracker
         public MainWindow()
         {
             InitializeComponent();
-
-            MainWindowViewModel viewModel = new MainWindowViewModel();
-            DataContext = viewModel;
+            MainWindowViewModel mainWindowViewModel = new MainWindowViewModel(UserManager.Instance);
+            DataContext = mainWindowViewModel;
         }
     }
 }

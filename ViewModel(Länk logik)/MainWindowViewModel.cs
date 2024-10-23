@@ -49,9 +49,6 @@ namespace FitTracker.ViewModel_Länk_logik_
                 OnPropertyChanged(nameof(UsernameInput));
             }
         }
-        
-
-        
 
         //Commands att binda till xaml
         private RelayCommand registerCommand;
@@ -75,8 +72,10 @@ namespace FitTracker.ViewModel_Länk_logik_
         public void Register()
         {
 
-            var registerWindow = new RegisterWindow();
+            var registerWindowViewModel = new RegisterWindowViewModel(UserManager.Instance);
+            var registerWindow = new RegisterWindow { DataContext = registerWindowViewModel };
             registerWindow.Show();
+
             App.Current.Windows[0].Close();
         }
 
@@ -94,21 +93,32 @@ namespace FitTracker.ViewModel_Länk_logik_
                 return signInCommand;
             }
         }
-        
 
-        //Metod för att öpnna workout window och stänga main window
-        public void SignIn()
+        public MainWindowViewModel() : this(UserManager.Instance) { }
+        public MainWindowViewModel(UserManager userManager)
         {
-            if (userManager.Users.Any(u => u.Username == UsernameInput)
+            this.userManager = userManager;
+        }
+            //Metod för att öpnna workout window och stänga main window
+            public void SignIn()
+        {
+            var userExists = userManager.Users.Any(u => u.Username == UsernameInput && u.Password == PasswordInput);
+            MessageBox.Show($"UsernameInput: {UsernameInput}, PasswordInput: {PasswordInput}, users in list {userManager.Users.Count} UserExists: {userExists}");
+
+            if (userManager.Users.Any(u => u.Username == UsernameInput && u.Password == PasswordInput))
 
             {
                 var workoutWindow = new WorkoutWindow();
                 workoutWindow.Show();
                 App.Current.Windows[0].Close();
-            }   
+            }  
+            else
+            {
+                MessageBox.Show("Fel user eller lösen");
+            }
         }
             //Metod till MVVM command
-            private void ExecuteSignIn(object parameter)
+            public void ExecuteSignIn(object parameter)
         {
             SignIn();
         }

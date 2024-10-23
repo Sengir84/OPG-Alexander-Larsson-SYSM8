@@ -12,6 +12,17 @@ namespace FitTracker.Model__Produkter_
         public string SecurityQuestion {  get; set; }
         public string SecurityAnswer { get; set; }
 
+        public User() { }
+
+        public User (string username, string password, string country) : base ()
+        {
+            Username = username;
+            Password = password;
+            Country = country;
+            //SecurityQuestion = securityQuestion;
+            //SecurityAnswer = securityAnswer;
+        }
+
         public void ResetPassword(string securityAnswer)
         {
             throw new NotImplementedException();

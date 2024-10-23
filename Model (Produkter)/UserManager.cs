@@ -10,11 +10,24 @@ namespace FitTracker.Model__Produkter_
 {
     public class UserManager
     {
+        private static UserManager instance;
         public ObservableCollection<User> Users { get; private set; }
 
         public UserManager() 
         { 
             Users = new ObservableCollection<User>();
+        }
+
+        public static UserManager Instance
+        {
+            get
+            {
+                if (instance == null)
+                {
+                    instance = new UserManager();
+                }
+                return instance;
+            }
         }
         
         public bool UniqueUsername(string username)
@@ -31,6 +44,7 @@ namespace FitTracker.Model__Produkter_
             else
             {
                 Users.Add(new User { Username = username, Password = password, Country = Country });
+                MessageBox.Show($"User added! Total users: {Users.Count}");
             }
         }
     }

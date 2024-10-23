@@ -5,6 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Configuration;
+using System.Diagnostics.Metrics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -74,6 +75,8 @@ namespace FitTracker.ViewModel_Länk_logik_
             }
         }
         public RelayCommand AddUserCommand { get; }
+
+        public RegisterWindowViewModel() : this(UserManager.Instance) { }
         public RegisterWindowViewModel(UserManager userManager)
         {
             this.userManager = userManager;
@@ -102,22 +105,23 @@ namespace FitTracker.ViewModel_Länk_logik_
         }
         public void RegisterNewUser()
         {
-           
-            if (passwordInput == ConfirmPasswordInput)
+            if (PasswordInput == ConfirmPasswordInput)
             {
-                userManager.AddUser(UsernameInput, PasswordInput, CountryComboBox);
-                MessageBox.Show("Användare registrerad, du kan nu logga in");
-                
-                var Mainwindow = new MainWindow();
-                Mainwindow.Show();
+                userManager.AddUser(UsernameInput, passwordInput, CountryComboBox);
+                MessageBox.Show($"Användare registrerad ");
+
+                var mainWindowViewModel = new MainWindowViewModel(UserManager.Instance);
+                var mainWindow = new MainWindow { DataContext = mainWindowViewModel };
+                mainWindow.Show();
+
                 App.Current.Windows[0].Close();
-                
             }
             else
             {
-                MessageBox.Show("Lösenord stämmer inte överens");
+                MessageBox.Show("Lösenord och kontroll stämmer inte överens");
             }
         }
+        
 
     }
     
