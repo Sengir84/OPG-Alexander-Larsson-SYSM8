@@ -1,4 +1,6 @@
-﻿using System;
+﻿using FitTracker.Model__Produkter_;
+using FitTracker.ViewModel_Länk_logik_;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -22,6 +24,8 @@ namespace FitTracker.View__UI_
         public AddWorkoutWindow()
         {
             InitializeComponent();
+            AddWorkoutWindowViewModel addWorkoutWindow = new AddWorkoutWindowViewModel();
+            DataContext = addWorkoutWindow;
         }
     }
 }

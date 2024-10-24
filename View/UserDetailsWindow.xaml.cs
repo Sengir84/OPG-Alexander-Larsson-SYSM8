@@ -1,4 +1,5 @@
-﻿using System;
+﻿using FitTracker.ViewModel_Länk_logik_;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -22,6 +23,8 @@ namespace FitTracker.View__UI_
         public UserDetailsWindow()
         {
             InitializeComponent();
+            UserDetailsWindowViewModel userDetailsWindowViewModel = new UserDetailsWindowViewModel();
+            DataContext = userDetailsWindowViewModel;
         }
     }
 }

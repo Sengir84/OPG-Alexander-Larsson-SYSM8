@@ -10,9 +10,9 @@
         <StackPanel>
             <TextBlock Text="{Binding ActiveUser}" Width=" 100" HorizontalAlignment="Right"/>
             <TextBlock Text="WORKOUT" FontSize="100"/>
-            <Button Content="AddWorkout"/>
+            <Button Content="Add workout" Command="{Binding AddWorkoutCommand}" Height="20"/>
         <Button Content="Remove Workout"/>
-        <Button Content="Open Details"/>
+        <Button Content="User Details" Command="{Binding UserDetailsCommand}"/>
     </StackPanel>
     </Grid>
 </Window>

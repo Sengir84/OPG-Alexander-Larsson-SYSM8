@@ -6,7 +6,8 @@ using System.Threading.Tasks;
 
 namespace FitTracker.ViewModel_Länk_logik_
 {
-    internal class AddWorkoutWindowViewModel
+    public class AddWorkoutWindowViewModel
     {
+
     }
 }
