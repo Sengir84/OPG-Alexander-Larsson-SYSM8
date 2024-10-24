@@ -61,7 +61,7 @@ namespace FitTracker
 
     interface IWorkoutsWindow
     {
-        public IUser user { get; set; }
+        
         public List<IWorkout> WorkoutList { get; set; }
         public void AddWorkout();
         public void RemoveWorkout();

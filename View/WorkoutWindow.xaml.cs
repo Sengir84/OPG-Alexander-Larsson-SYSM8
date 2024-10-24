@@ -1,4 +1,5 @@
-﻿using System;
+﻿using FitTracker.ViewModel_Länk_logik_;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -19,9 +20,10 @@ namespace FitTracker.View__UI_
     /// </summary>
     public partial class WorkoutWindow : Window
     {
-        public WorkoutWindow()
+        public WorkoutWindow(string activeUser)
         {
             InitializeComponent();
+            DataContext = new WorkoutWindowViewModel(activeUser);
         }
     }
 }

@@ -16,6 +16,7 @@ namespace FitTracker.Model__Produkter_
         public UserManager() 
         { 
             Users = new ObservableCollection<User>();
+            DefaultUsers();
         }
 
         public static UserManager Instance
@@ -29,7 +30,10 @@ namespace FitTracker.Model__Produkter_
                 return instance;
             }
         }
-        
+        private void DefaultUsers() 
+        { 
+            Users.Add(new User { Username = "Alex", Password = "Alexander!", Country = "Sverige" });
+        }
         public bool UniqueUsername(string username)
         {
             return !Users.Any(u=> u.Username == username);

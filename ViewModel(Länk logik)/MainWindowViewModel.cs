@@ -6,6 +6,7 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Collections.Specialized;
+using System.ComponentModel.Design;
 using System.Configuration;
 using System.Linq;
 using System.Security.Cryptography.X509Certificates;
@@ -21,6 +22,11 @@ namespace FitTracker.ViewModel_Länk_logik_
     public class MainWindowViewModel : ViewModelBase, IMainWindow
     {
         private UserManager userManager;
+        public MainWindowViewModel() : this(UserManager.Instance) { }
+        public MainWindowViewModel(UserManager userManager)
+        {
+            this.userManager = userManager;
+        }
         public RelayCommand AddUserCommand { get; }
         public string LabelTitle { get; set; }
 
@@ -50,6 +56,7 @@ namespace FitTracker.ViewModel_Länk_logik_
                 OnPropertyChanged(nameof(UsernameInput));
             }
         }
+       
 
         //Commands att binda till xaml
         private RelayCommand registerCommand;
@@ -95,21 +102,18 @@ namespace FitTracker.ViewModel_Länk_logik_
             }
         }
 
-        public MainWindowViewModel() : this(UserManager.Instance) { }
-        public MainWindowViewModel(UserManager userManager)
-        {
-            this.userManager = userManager;
-        }
+        
             //Metod för att öpnna workout window och stänga main window
             public void SignIn()
         {
-            var userExists = userManager.Users.Any(u => u.Username == UsernameInput && u.Password == PasswordInput);
-            MessageBox.Show($"UsernameInput: {UsernameInput}, PasswordInput: {PasswordInput}, users in list {userManager.Users.Count} UserExists: {userExists}" );
+            var user = userManager.Users.FirstOrDefault(u => u.Username == UsernameInput && u.Password == PasswordInput);
+            MessageBox.Show($"UsernameInput: {UsernameInput}, PasswordInput: {PasswordInput}, users in list {userManager.Users.Count}" );
 
             if (userManager.Users.Any(u => u.Username == UsernameInput && u.Password == PasswordInput))
-
+               
             {
-                var workoutWindow = new WorkoutWindow();
+
+                var workoutWindow = new WorkoutWindow(user.Username);
                 workoutWindow.Show();
                 App.Current.Windows[0].Close();
             }  
