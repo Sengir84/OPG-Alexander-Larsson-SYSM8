@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -28,7 +29,7 @@ namespace FitTracker
         public void ManageAllWorkouts();
     }
 
-    interface IWorkout
+    public interface IWorkout
     {
         public DateTime Date { get; set; }
         public string Type { get; set; }
@@ -59,12 +60,13 @@ namespace FitTracker
         public void Register();
     }
 
-    interface IWorkoutsWindow
+    public interface IWorkoutsWindow
     {
+
+        public ObservableCollection<IWorkout> WorkoutList {get; set;}
         
-        public List<IWorkout> WorkoutList { get; set; }
-        public void AddWorkout();
-        public void RemoveWorkout();
+        void AddWorkout();
+        void RemoveWorkout();
         public void OpenDetails(IWorkout workout);
     }
     interface IRegisterWindow

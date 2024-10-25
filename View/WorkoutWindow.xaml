@@ -7,12 +7,44 @@
         mc:Ignorable="d"
         Title="WorkoutWindow" Height="450" Width="800">
     <Grid>
+        
+        
         <StackPanel>
             <TextBlock Text="{Binding ActiveUser}" Width=" 100" HorizontalAlignment="Right"/>
             <TextBlock Text="WORKOUT" FontSize="100"/>
             <Button Content="Add workout" Command="{Binding AddWorkoutCommand}" Height="20"/>
         <Button Content="Remove Workout"/>
         <Button Content="User Details" Command="{Binding UserDetailsCommand}"/>
-    </StackPanel>
+            <Button Content="Workout Details" Command="{Binding WorkoutDetailsCommand}"/>
+            <Button Content="Remove workout"/>
+            <Button Content="Sign Out"/>
+            <DataGrid
+
+                AutoGenerateColumns="False"
+                CanUserAddRows="False"
+                CanUserDeleteRows="False"
+                ItemsSource="{Binding WorkoutList}"
+                SelectedItem="{Binding SelectedItem}">
+
+                <DataGrid.Columns>
+                    <DataGridTextColumn
+            Width="4*"
+            Binding="{Binding Type}"
+            Header="Workout" />
+                    <DataGridTextColumn
+            Width="4*"
+            Binding="{Binding Date}"
+            Header="Date" />
+                    
+                    <DataGridTextColumn
+            Width="1*"
+            Binding="{Binding Duration}"
+            Header="Duration" />
+                </DataGrid.Columns>
+
+            </DataGrid>
+            
+        </StackPanel>
+        
     </Grid>
 </Window>
