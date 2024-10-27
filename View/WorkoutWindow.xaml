@@ -13,18 +13,17 @@
             <TextBlock Text="{Binding ActiveUser}" Width=" 100" HorizontalAlignment="Right"/>
             <TextBlock Text="WORKOUT" FontSize="100"/>
             <Button Content="Add workout" Command="{Binding AddWorkoutCommand}" Height="20"/>
-        <Button Content="Remove Workout"/>
+            <Button Content="Remove Workout" Command="{Binding RemoveWorkoutCommand}"/>
         <Button Content="User Details" Command="{Binding UserDetailsCommand}"/>
             <Button Content="Workout Details" Command="{Binding WorkoutDetailsCommand}"/>
-            <Button Content="Remove workout"/>
-            <Button Content="Sign Out"/>
+            <Button Content="Sign Out" Command="{Binding SignOutCommand}"/>
             <DataGrid
-
+                IsReadOnly ="True"
                 AutoGenerateColumns="False"
                 CanUserAddRows="False"
                 CanUserDeleteRows="False"
                 ItemsSource="{Binding WorkoutList}"
-                SelectedItem="{Binding SelectedItem}">
+                SelectedItem="{Binding SelectedWorkout}">
 
                 <DataGrid.Columns>
                     <DataGridTextColumn

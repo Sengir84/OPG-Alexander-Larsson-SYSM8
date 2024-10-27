@@ -61,7 +61,7 @@ namespace FitTracker.Model__Produkter_
             else
             {
                 Users.Add(new User { Username = username, Password = password, Country = Country,SecurityQuestion = securityQuestion, SecurityAnswer = securityAnswer});
-                MessageBox.Show($"User added! Total users: {Users.Count}");
+                
             }
         }
     }

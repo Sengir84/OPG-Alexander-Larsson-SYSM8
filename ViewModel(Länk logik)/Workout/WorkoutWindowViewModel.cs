@@ -12,17 +12,18 @@ namespace FitTracker.ViewModel_Länk_logik_
 {
     public class WorkoutWindowViewModel : ViewModelBase, IWorkoutsWindow
     {
+        
+        public ObservableCollection<IWorkout> WorkoutList
+        {
+            get { return WorkoutManager.Instance.WorkoutList; }
 
-        private ObservableCollection<IWorkout> workoutList;
-        public ObservableCollection<IWorkout> WorkoutList 
-        { 
-            get {  return workoutList; }
             set
             {
-                workoutList = value;
+                WorkoutManager.Instance.WorkoutList = value;
                 OnPropertyChanged(nameof(WorkoutList));
             }
         }
+        
         private IWorkout selectedWorkout;
         public IWorkout SelectedWorkout
         {
@@ -33,6 +34,24 @@ namespace FitTracker.ViewModel_Länk_logik_
                 OnPropertyChanged();
             }
         }
+    
+        public WorkoutWindowViewModel(string activeUser)
+        {
+            ActiveUser = activeUser;
+        }
+
+        private string activeUser;
+        public string ActiveUser
+        {
+            get { return activeUser; }
+            set
+            {
+                activeUser = value;
+                OnPropertyChanged(nameof(ActiveUser));
+            }
+        }
+
+        
 
         private RelayCommand addWorkoutCommand;
         public RelayCommand AddWorkoutCommand
@@ -73,10 +92,22 @@ namespace FitTracker.ViewModel_Länk_logik_
             }
             
         }
+        private RelayCommand removeWorkoutCommand;
+        public RelayCommand RemoveWorkoutCommand
+        {
+            get
+            {
+                if (removeWorkoutCommand == null)
+                {
+                    removeWorkoutCommand = new RelayCommand(ExecuteRemoveWorkout);
+                }
+                return removeWorkoutCommand;
+            }
+        }
 
         private void ExecuteOpenDetails(object obj)
         {
-            //OpenDetails(WorkoutList.);
+            OpenDetails(SelectedWorkout);
         }
 
         private void ExecuteUserDetails(object obj)
@@ -90,27 +121,7 @@ namespace FitTracker.ViewModel_Länk_logik_
             
             userDetailsWindow.Show();
         }
-        private string activeUser;
         
-
-        public string ActiveUser
-        {
-            get { return activeUser; }
-            set 
-            { 
-                activeUser = value; 
-                OnPropertyChanged(nameof(ActiveUser));
-            }
-        }
-
-        
-
-        public WorkoutWindowViewModel(string activeUser)
-        {
-            ActiveUser = activeUser;
-            WorkoutList = new ObservableCollection<IWorkout>();
-            WorkoutList.Add(new Workout { Type = "Cardio", Date = DateTime.Now, Notes = "Bra pump" });
-        }
 
         private void ExecuteAddworkout(object obj)
         {
@@ -123,20 +134,25 @@ namespace FitTracker.ViewModel_Länk_logik_
             addworkoutWindow = new AddWorkoutWindow{ DataContext = addworkoutWindow };
             addworkoutWindow.Show();
         }
-
+        public void ExecuteRemoveWorkout(object obj) 
+        {  
+            RemoveWorkout(); 
+        }
         public void RemoveWorkout()
         {
-            WorkoutList.Remove(SelectedWorkout);
+            if (selectedWorkout != null)
+            {
+                WorkoutManager.Instance.RemoveWorkout(selectedWorkout);
+            }
         }
 
-        void OpenDetails(IWorkout workout)
+        public void OpenDetails(IWorkout workout)
         {
-            throw new NotImplementedException();
+            var workoutDetailsWindow = new WorkoutDetailsWindow();
+            workoutDetailsWindow = new WorkoutDetailsWindow { DataContext = workoutDetailsWindow };
+            workoutDetailsWindow.Show();
         }
 
-        void IWorkoutsWindow.OpenDetails(IWorkout workout)
-        {
-            throw new NotImplementedException();
-        }
+        
     }
 }
