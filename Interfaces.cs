@@ -31,6 +31,7 @@ namespace FitTracker
 
     public interface IWorkout
     {
+        public int Id { get; set; }
         public DateTime Date { get; set; }
         public string Type { get; set; }
         public TimeSpan Duration { get; set; }
