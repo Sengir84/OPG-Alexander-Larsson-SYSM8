@@ -86,7 +86,7 @@ namespace FitTracker.ViewModel_Länk_logik_
             {
                 if (workoutDetailsCommand == null)
                 {
-                    workoutDetailsCommand = new RelayCommand(ExecuteOpenDetails);
+                    workoutDetailsCommand = new RelayCommand(ExecuteOpenWorkoutDetails);
                 }
                 return workoutDetailsCommand;
             }
@@ -104,10 +104,28 @@ namespace FitTracker.ViewModel_Länk_logik_
                 return removeWorkoutCommand;
             }
         }
-
-        private void ExecuteOpenDetails(object obj)
+        private RelayCommand signOutCommand;
+        public RelayCommand SignOutCommand
         {
-            OpenDetails(SelectedWorkout);
+            get
+            {
+                if(signOutCommand == null)
+                {
+                    signOutCommand = new RelayCommand(ExecuteSignout);
+                }
+                return signOutCommand;
+
+            }
+        }
+
+       
+
+        private void ExecuteOpenWorkoutDetails(object obj)
+        {
+            if (SelectedWorkout != null)
+            {
+                OpenDetails(SelectedWorkout);
+            }
         }
 
         private void ExecuteUserDetails(object obj)
@@ -148,11 +166,26 @@ namespace FitTracker.ViewModel_Länk_logik_
 
         public void OpenDetails(IWorkout workout)
         {
-            var workoutDetailsWindow = new WorkoutDetailsWindow();
-            workoutDetailsWindow = new WorkoutDetailsWindow { DataContext = workoutDetailsWindow };
-            workoutDetailsWindow.Show();
+            if (SelectedWorkout != null)
+            {
+                var workoutDetailsWindow = new WorkoutDetailsWindow(SelectedWorkout);
+                workoutDetailsWindow.Show();
+            }
+        }
+        private void ExecuteSignout(object obj)
+        {
+            SignOut();
         }
 
-        
+        public void SignOut()
+        {
+            ActiveUser = null;
+            
+            var mainWindowViewModel = new MainWindowViewModel();
+            var mainWindow = new MainWindow { DataContext = mainWindowViewModel };
+            mainWindow.Show();
+            App.Current.Windows[0].Close();
+        }
+
     }
 }

@@ -7,6 +7,16 @@
         mc:Ignorable="d"
         Title="WorkoutDetailsWindow" Height="450" Width="800">
     <Grid>
-        
+        <StackPanel>
+
+            <TextBox Text="{Binding Workout.Date}" IsReadOnly="True"/>
+            <TextBox Text="{Binding Workout.Type}" IsReadOnly="True"/>
+            <TextBox Text="{Binding Workout.Duration}" IsReadOnly="True"/>
+            <TextBox Text="{Binding Workout.Calories}" IsReadOnly="True"/>
+            <TextBox Text="{Binding Workout.Notes}" IsReadOnly="True"/>
+            <Button Content="Edit" Command="{Binding EditWorkoutCommand}"/>
+            <Button Content="Save" Command="{Binding SaveWorkoutCommand}"/>
+            
+        </StackPanel>
     </Grid>
 </Window>
