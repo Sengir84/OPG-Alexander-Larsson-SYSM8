@@ -25,7 +25,7 @@ namespace FitTracker.View__UI_
         {
             InitializeComponent();
 
-            DataContext = new WorkoutDetailsWindowViewModel(workout);
+            DataContext = new WorkoutDetailsWindowViewModel(workout, WorkoutManager.Instance);
         }
     }
 }

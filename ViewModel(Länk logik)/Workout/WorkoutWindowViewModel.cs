@@ -12,7 +12,7 @@ namespace FitTracker.ViewModel_Länk_logik_
 {
     public class WorkoutWindowViewModel : ViewModelBase, IWorkoutsWindow
     {
-        
+        private readonly WorkoutManager workoutManager;
         public ObservableCollection<IWorkout> WorkoutList
         {
             get { return WorkoutManager.Instance.WorkoutList; }
@@ -35,13 +35,14 @@ namespace FitTracker.ViewModel_Länk_logik_
             }
         }
     
-        public WorkoutWindowViewModel(string activeUser)
+        public WorkoutWindowViewModel(WorkoutManager workoutManager)
         {
-            ActiveUser = activeUser;
+            this.workoutManager = workoutManager ?? throw new ArgumentNullException(nameof(workoutManager));
+            ActiveUser = UserManager.Instance.ActiveUser;
         }
 
-        private string activeUser;
-        public string ActiveUser
+        private User activeUser;
+        public User ActiveUser
         {
             get { return activeUser; }
             set
@@ -66,10 +67,8 @@ namespace FitTracker.ViewModel_Länk_logik_
             }
         }
         private RelayCommand userDetailsCommand;
-
         public RelayCommand UserDetailsCommand
         {
-
             get
             {
                 if (userDetailsCommand == null)
@@ -170,6 +169,7 @@ namespace FitTracker.ViewModel_Länk_logik_
             {
                 var workoutDetailsWindow = new WorkoutDetailsWindow(SelectedWorkout);
                 workoutDetailsWindow.Show();
+                App.Current.Windows[0].Close();
             }
         }
         private void ExecuteSignout(object obj)
@@ -179,7 +179,7 @@ namespace FitTracker.ViewModel_Länk_logik_
 
         public void SignOut()
         {
-            ActiveUser = null;
+            UserManager.Instance.ActiveUser = null;
             
             var mainWindowViewModel = new MainWindowViewModel();
             var mainWindow = new MainWindow { DataContext = mainWindowViewModel };

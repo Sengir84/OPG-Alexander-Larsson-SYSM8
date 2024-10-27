@@ -1,4 +1,6 @@
-﻿using FitTracker.MVVM;
+﻿using FitTracker.Model__Produkter_;
+using FitTracker.MVVM;
+using FitTracker.View__UI_;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,11 +11,21 @@ namespace FitTracker.ViewModel_Länk_logik_
 {
     public class WorkoutDetailsWindowViewModel : ViewModelBase, IWorkoutDetailsWindow
     {
+        private readonly WorkoutManager workoutManager;
         public IWorkout Workout { get; set; }
         
-        public WorkoutDetailsWindowViewModel(IWorkout workout)
+        public User ActiveUser
+        {
+            get
+            {
+                return UserManager.Instance.ActiveUser;
+            }
+        }
+
+        public WorkoutDetailsWindowViewModel(IWorkout workout, WorkoutManager workoutManager)
         {
             Workout = workout ?? throw new ArgumentNullException(nameof(workout));
+            this.workoutManager = workoutManager ?? throw new ArgumentNullException(nameof(workoutManager));
             IsTextBoxReadOnly = true;
         }
 
@@ -73,8 +85,26 @@ namespace FitTracker.ViewModel_Länk_logik_
 
         public void SaveWorkout()
         {
+            foreach (var workout in workoutManager.WorkoutList)
+            {
+                if (workout == Workout)
+                {
+                    workout.Id = Workout.Id;
+                    workout.Type = Workout.Type;
+                    workout.Date = Workout.Date;
+                    workout.Duration = Workout.Duration;
+                    workout.CaloriesBurned = Workout.CaloriesBurned;
+                    workout.Notes = Workout.Notes;
+                }
+            }
+            IsTextBoxReadOnly = true;
 
-            IsTextBoxReadOnly= true;
+            var workoutWindowViewModel = new WorkoutWindowViewModel(workoutManager);
+            var workoutWindow = new WorkoutWindow { DataContext = workoutWindowViewModel };
+            workoutWindow.Show();
+            App.Current.Windows[0].Close();
+
         }
+        
     }
 }

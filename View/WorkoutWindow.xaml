@@ -10,7 +10,7 @@
         
         
         <StackPanel>
-            <TextBlock Text="{Binding ActiveUser}" Width=" 100" HorizontalAlignment="Right"/>
+            <TextBlock Text="{Binding ActiveUser.Username}" Width=" 100" HorizontalAlignment="Right"/>
             <TextBlock Text="WORKOUT" FontSize="100"/>
             <Button Content="Add workout" Command="{Binding AddWorkoutCommand}" Height="20"/>
             <Button Content="Remove Workout" Command="{Binding RemoveWorkoutCommand}"/>

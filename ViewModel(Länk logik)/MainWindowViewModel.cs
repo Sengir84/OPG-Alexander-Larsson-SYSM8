@@ -107,13 +107,13 @@ namespace FitTracker.ViewModel_Länk_logik_
             public void SignIn()
         {
             var user = userManager.Users.FirstOrDefault(u => u.Username == UsernameInput && u.Password == PasswordInput);
-            MessageBox.Show($"UsernameInput: {UsernameInput}, PasswordInput: {PasswordInput}, users in list {userManager.Users.Count}" );
 
-            if (userManager.Users.Any(u => u.Username == UsernameInput && u.Password == PasswordInput))
+            if (user != null)
                
             {
-
-                var workoutWindow = new WorkoutWindow(user.Username);
+                userManager.ActiveUser = user;
+                var workoutWindowViewModel = new WorkoutWindowViewModel(WorkoutManager.Instance);
+                var workoutWindow = new WorkoutWindow { DataContext = workoutWindowViewModel };
                 workoutWindow.Show();
                 App.Current.Windows[0].Close();
             }  

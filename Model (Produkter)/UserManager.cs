@@ -1,4 +1,5 @@
-﻿using System;
+﻿using FitTracker.MVVM;
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
@@ -8,7 +9,7 @@ using System.Windows;
 
 namespace FitTracker.Model__Produkter_
 {
-    public class UserManager
+    public class UserManager : ViewModelBase
     {
         private static UserManager instance;
         public ObservableCollection<User> Users { get; private set; }
@@ -30,6 +31,17 @@ namespace FitTracker.Model__Produkter_
                 return instance;
             }
         }
+        private User activeUser;
+        public User ActiveUser
+        {
+            get { return activeUser; }
+            set
+            {
+                activeUser = value;
+                OnPropertyChanged(nameof(ActiveUser));
+            }
+        }
+
         private void DefaultUsers() 
         { 
             Users.Add(new User { Username = "Alex", Password = "Alexander!", Country = "Sverige" });
