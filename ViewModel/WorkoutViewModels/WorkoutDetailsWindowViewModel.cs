@@ -6,9 +6,31 @@ namespace FitTracker.ViewModel.WorkoutViewModels
 {
     public class WorkoutDetailsWindowViewModel : ViewModelBase, IWorkoutDetailsWindow
     {
+        
         private readonly WorkoutManager workoutManager;
         public IWorkout Workout { get; set; }
         
+        private bool isStrengthWorkoutVisible;
+        public bool IsStrengthWorkoutVisible
+        {
+            get => isStrengthWorkoutVisible;
+            set
+            {
+                isStrengthWorkoutVisible = value;
+                OnPropertyChanged(nameof(IsStrengthWorkoutVisible));
+            }
+        }
+
+        private bool isCardioWorkoutVisible;
+        public bool IsCardioWorkoutVisible
+        {
+            get => isCardioWorkoutVisible;
+            set
+            {
+                isCardioWorkoutVisible = value;
+                OnPropertyChanged(nameof(IsCardioWorkoutVisible));
+            }
+        }
         public User ActiveUser
         {
             get
@@ -22,6 +44,22 @@ namespace FitTracker.ViewModel.WorkoutViewModels
             Workout = workout ?? throw new ArgumentNullException(nameof(workout));
             this.workoutManager = workoutManager ?? throw new ArgumentNullException(nameof(workoutManager));
             IsTextBoxReadOnly = true;
+            UpdateWorkoutTypeVisibility();
+        }
+
+        private void UpdateWorkoutTypeVisibility()
+        {
+            IsStrengthWorkoutVisible = false;
+            IsCardioWorkoutVisible = false;
+
+            if (Workout.Type == "Cardio")
+            {
+                IsCardioWorkoutVisible = true;
+            }
+            else if (Workout.Type == "Strength")
+            {
+                IsStrengthWorkoutVisible= true;
+            }
         }
 
         private bool isTextBoxReadOnly;

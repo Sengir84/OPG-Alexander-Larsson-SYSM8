@@ -6,13 +6,36 @@
         xmlns:local="clr-namespace:FitTracker.View__UI_"
         mc:Ignorable="d"
         Title="WorkoutDetailsWindow" Height="450" Width="800">
+    <Window.Resources>
+        <BooleanToVisibilityConverter x:Key="BoolToVisibilityConverter" />
+    </Window.Resources>
+
     <Grid>
         <StackPanel>
-
-            <TextBox Text="{Binding Workout.Date}" IsReadOnly="{Binding IsTextBoxReadOnly}"/>
+            <Label Content="Type"/>
             <TextBox Text="{Binding Workout.Type}" IsReadOnly="{Binding IsTextBoxReadOnly}"/>
+            <Label Content="Date"/>
+            <TextBox Text="{Binding Workout.Date}" IsReadOnly="{Binding IsTextBoxReadOnly}"/>
+            <Label Content="Duration"/>
             <TextBox Text="{Binding Workout.Duration}" IsReadOnly="{Binding IsTextBoxReadOnly}"/>
+                       
+            <!-- Strength Workout -->
+            <StackPanel Visibility="{Binding IsStrengthWorkoutVisible, Converter={StaticResource BoolToVisibilityConverter}}">
+                <Label Content="Equipment"/>
+                <TextBox Text="{Binding Workout.Equipment}" />
+                <Label Content="Repetitions"/>
+                <TextBox Text="{Binding Workout.Repetitions}" />
+            </StackPanel>
+            
+            <!-- Cardio Workout -->
+            <StackPanel Visibility="{Binding IsCardioWorkoutVisible, Converter={StaticResource BoolToVisibilityConverter}}">
+                <Label Content="Distance"/>
+                <TextBox Text="{Binding Workout.Distance}" />
+            </StackPanel>
+
+            <Label Content="Calories"/>
             <TextBox Text="{Binding Workout.CaloriesBurned}" IsReadOnly="{Binding IsTextBoxReadOnly}"/>
+            <Label Content="Notes"/>
             <TextBox Text="{Binding Workout.Notes}" IsReadOnly="{Binding IsTextBoxReadOnly}"/>
             <Button Content="Edit" Command="{Binding EditWorkoutCommand}"/>
             <Button Content="Save" Command="{Binding SaveWorkoutCommand}"/>

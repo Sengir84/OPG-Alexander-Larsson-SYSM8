@@ -112,8 +112,8 @@ namespace FitTracker.ViewModel.WorkoutViewModels
                 MessageBox.Show("Must choose a workout type");
                 return;
             }
-
-            WorkoutManager.Instance.AddWorkout(workout);
+            
+             WorkoutManager.Instance.AddWorkout(workout);
         }
         private void ExecuteReturn(object obj)
         {

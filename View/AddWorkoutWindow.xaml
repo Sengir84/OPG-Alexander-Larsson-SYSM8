@@ -25,7 +25,7 @@
                 <TextBox Text="{Binding RepetitionsInput}"/>
             </StackPanel>
             
-                    <!-- Cardio Workout Fields -->
+                    <!-- Cardio Workout -->
             <StackPanel Visibility="{Binding IsCardioWorkout, Converter={StaticResource BooleanToVisibilityConverter}}">
                 <Label Content="Distance"/>
                 <TextBox Text="{Binding DistanceInput}"/>
