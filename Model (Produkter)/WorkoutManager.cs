@@ -30,8 +30,8 @@ namespace FitTracker.Model__Produkter_
                 return instance;
             }
         }
-        
-        public void AddWorkout(IWorkout workout)
+
+        public void AddWorkout(WorkoutModel workout)
         {
             WorkoutList.Add(workout);
         }
@@ -40,23 +40,12 @@ namespace FitTracker.Model__Produkter_
         {
             WorkoutList.Remove(workout);
         }
-        private int SetId()
-        {
-            int Id = 0;
-            foreach (IWorkout workout in WorkoutList)
-            {
-                if (workout.Id > Id)
-                {
-                    Id = workout.Id;
-                }
-            }
-            return Id + 1;
-        }
+        
         private void AddDefaultWorkout()
         {
-            WorkoutList.Add(new Workout { Id = SetId(), Type = "Strength", Date = new DateTime(2024, 10, 27, 16, 32, 00), Duration = new TimeSpan(1, 22, 30) });
+            WorkoutList.Add(new WorkoutModel { Date = new DateTime(2024, 10, 27, 16, 32, 00), Type = "Strength", Duration = new TimeSpan(1, 22, 30) });
         }
-
+        
         
     }
 }

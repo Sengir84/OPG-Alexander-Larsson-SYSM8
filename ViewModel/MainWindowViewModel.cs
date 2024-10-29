@@ -2,22 +2,10 @@
 using FitTracker.MVVM;
 
 using FitTracker.View__UI_;
-using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.Collections.Specialized;
-using System.ComponentModel.Design;
-using System.Configuration;
-using System.Linq;
-using System.Security.Cryptography.X509Certificates;
-using System.Text;
-using System.Threading.Tasks;
+using FitTracker.ViewModel.WorkoutViewModels;
 using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Input;
-using System.Xml.Linq;
 
-namespace FitTracker.ViewModel_Länk_logik_
+namespace FitTracker.ViewModel
 {
     public class MainWindowViewModel : ViewModelBase, IMainWindow
     {

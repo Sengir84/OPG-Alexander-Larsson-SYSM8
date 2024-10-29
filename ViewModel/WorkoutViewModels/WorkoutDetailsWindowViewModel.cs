@@ -1,13 +1,8 @@
 ﻿using FitTracker.Model__Produkter_;
 using FitTracker.MVVM;
 using FitTracker.View__UI_;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace FitTracker.ViewModel_Länk_logik_
+namespace FitTracker.ViewModel.WorkoutViewModels
 {
     public class WorkoutDetailsWindowViewModel : ViewModelBase, IWorkoutDetailsWindow
     {
@@ -89,7 +84,6 @@ namespace FitTracker.ViewModel_Länk_logik_
             {
                 if (workout == Workout)
                 {
-                    workout.Id = Workout.Id;
                     workout.Type = Workout.Type;
                     workout.Date = Workout.Date;
                     workout.Duration = Workout.Duration;

@@ -1,12 +1,21 @@
-﻿<Window x:Class="FitTracker.View__UI_.AddWorkoutWindow"
+﻿<Window x:Class="FitTracker.View.AddWorkoutWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:FitTracker.View__UI_"
-        mc:Ignorable="d"
+        xmlns:local="clr-namespace:FitTracker.View"
+        xmlns:workout="clr-namespace:FitTracker.ViewModel.WorkoutViewModels" 
+        
         Title="AddWorkoutWindow" Height="450" Width="800">
     <Grid>
-        
+        <StackPanel>
+            <TextBlock Text="ADD WORKOUT" FontSize="100"/>
+            <ComboBox ItemsSource="{Binding WorkoutType}" SelectedItem="{Binding WorkoutTypeCombobox, Mode=TwoWay}"/>
+            <TextBox Text="{Binding DurationInput, UpdateSourceTrigger=PropertyChanged}"/>
+            <TextBox Text="{Binding CaloriesBurnedInput, UpdateSourceTrigger=PropertyChanged}"/>
+            <TextBox Text="{Binding NotesInput, UpdateSourceTrigger=PropertyChanged}"/>
+            <Button Content="Save" Command="{Binding SaveWorkoutCommand}"/>
+            <Button Content="Return to Workouts" Command="{Binding ReturnCommand}"/>
+            
+        </StackPanel>
     </Grid>
 </Window>

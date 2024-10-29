@@ -1,18 +1,9 @@
 ﻿using FitTracker.Model__Produkter_;
 using FitTracker.MVVM;
-using FitTracker.View__UI_;
-using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Configuration;
-using System.Diagnostics.Metrics;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
-using System.Xml.Linq;
 
-namespace FitTracker.ViewModel_Länk_logik_
+namespace FitTracker.ViewModel
 {
     public class RegisterWindowViewModel : ViewModelBase, IRegisterWindow
     {
@@ -30,7 +21,6 @@ namespace FitTracker.ViewModel_Länk_logik_
                 OnPropertyChanged(nameof(UsernameInput));
             }
         }
-        
 
         private string countryComboBox;
         public string CountryComboBox

@@ -1,14 +1,10 @@
 ﻿using FitTracker.Model__Produkter_;
 using FitTracker.MVVM;
+using FitTracker.View;
 using FitTracker.View__UI_;
-using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace FitTracker.ViewModel_Länk_logik_
+namespace FitTracker.ViewModel.WorkoutViewModels
 {
     public class WorkoutWindowViewModel : ViewModelBase, IWorkoutsWindow
     {
@@ -148,7 +144,7 @@ namespace FitTracker.ViewModel_Länk_logik_
         public void AddWorkout()
         {
             var addworkoutWindow = new AddWorkoutWindow();
-            addworkoutWindow = new AddWorkoutWindow{ DataContext = addworkoutWindow };
+            addworkoutWindow = new AddWorkoutWindow();
             addworkoutWindow.Show();
         }
         public void ExecuteRemoveWorkout(object obj) 

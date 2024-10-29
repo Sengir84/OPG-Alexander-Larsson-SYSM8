@@ -4,6 +4,7 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Controls;
 
 namespace FitTracker
 {
@@ -31,7 +32,6 @@ namespace FitTracker
 
     public interface IWorkout
     {
-        public int Id { get; set; }
         public DateTime Date { get; set; }
         public string Type { get; set; }
         public TimeSpan Duration { get; set; }
@@ -88,7 +88,6 @@ namespace FitTracker
     }
     interface IAddWorkoutWindow
     {
-        public string WorkoutTypeComboBox { get; set; }
         public TimeSpan DurationInput { get; set; }
         public int CaloriesBurnedInput { get; set; }
         public string NotesInput { get; set; }

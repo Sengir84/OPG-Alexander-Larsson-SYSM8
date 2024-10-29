@@ -1,5 +1,5 @@
 ﻿using FitTracker.Model__Produkter_;
-using FitTracker.ViewModel_Länk_logik_;
+using FitTracker.ViewModel;
 using System;
 using System.Collections.Generic;
 using System.Linq;
