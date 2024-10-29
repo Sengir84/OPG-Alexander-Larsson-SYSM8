@@ -3,6 +3,7 @@ using FitTracker.MVVM;
 using FitTracker.View;
 using FitTracker.View__UI_;
 using System.Collections.ObjectModel;
+using System.Windows;
 
 namespace FitTracker.ViewModel.WorkoutViewModels
 {
@@ -144,8 +145,8 @@ namespace FitTracker.ViewModel.WorkoutViewModels
         public void AddWorkout()
         {
             var addworkoutWindow = new AddWorkoutWindow();
-            addworkoutWindow = new AddWorkoutWindow();
             addworkoutWindow.Show();
+            
         }
         public void ExecuteRemoveWorkout(object obj) 
         {  
@@ -165,7 +166,10 @@ namespace FitTracker.ViewModel.WorkoutViewModels
             {
                 var workoutDetailsWindow = new WorkoutDetailsWindow(SelectedWorkout);
                 workoutDetailsWindow.Show();
-                App.Current.Windows[0].Close();
+                if (App.Current.Windows.OfType<WorkoutWindow>().FirstOrDefault() is Window workoutWindow)
+                {
+                    workoutWindow.Close();
+                }
             }
         }
         private void ExecuteSignout(object obj)

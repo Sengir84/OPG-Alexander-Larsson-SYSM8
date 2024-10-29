@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace FitTracker.Model__Produkter_
 {
-    public class WorkoutModel : ViewModelBase, IWorkout
+    public abstract class WorkoutModel : ViewModelBase, IWorkout
     {
         public DateTime Date {get;set;}
         public string Type { get; set; }
@@ -25,9 +25,7 @@ namespace FitTracker.Model__Produkter_
             Notes = notes;
         }
 
-        public int CalculateCaloriesBurned()
-        {
-            throw new NotImplementedException();
-        }
+        public abstract int CalculateCaloriesBurned();
+        
     }
 }

@@ -12,7 +12,7 @@
             <TextBox Text="{Binding Workout.Date}" IsReadOnly="{Binding IsTextBoxReadOnly}"/>
             <TextBox Text="{Binding Workout.Type}" IsReadOnly="{Binding IsTextBoxReadOnly}"/>
             <TextBox Text="{Binding Workout.Duration}" IsReadOnly="{Binding IsTextBoxReadOnly}"/>
-            <TextBox Text="{Binding Workout.Calories}" IsReadOnly="{Binding IsTextBoxReadOnly}"/>
+            <TextBox Text="{Binding Workout.CaloriesBurned}" IsReadOnly="{Binding IsTextBoxReadOnly}"/>
             <TextBox Text="{Binding Workout.Notes}" IsReadOnly="{Binding IsTextBoxReadOnly}"/>
             <Button Content="Edit" Command="{Binding EditWorkoutCommand}"/>
             <Button Content="Save" Command="{Binding SaveWorkoutCommand}"/>

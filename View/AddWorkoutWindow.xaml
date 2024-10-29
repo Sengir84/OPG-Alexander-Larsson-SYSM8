@@ -6,12 +6,34 @@
         xmlns:workout="clr-namespace:FitTracker.ViewModel.WorkoutViewModels" 
         
         Title="AddWorkoutWindow" Height="450" Width="800">
+    <Window.Resources>
+        <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
+    </Window.Resources>
+
     <Grid>
         <StackPanel>
             <TextBlock Text="ADD WORKOUT" FontSize="100"/>
+            <Label Content="Type"/>
             <ComboBox ItemsSource="{Binding WorkoutType}" SelectedItem="{Binding WorkoutTypeCombobox, Mode=TwoWay}"/>
+            <Label Content="Duration"/>
             <TextBox Text="{Binding DurationInput, UpdateSourceTrigger=PropertyChanged}"/>
+                    <!-- Strength Workout -->
+            <StackPanel Visibility="{Binding IsStrengthWorkout, Converter={StaticResource BooleanToVisibilityConverter}}">
+                <Label Content="Equipment"/>
+                <TextBox Text="{Binding EquipmentInput}" />
+                <Label Content="Repetitions"/>
+                <TextBox Text="{Binding RepetitionsInput}"/>
+            </StackPanel>
+            
+                    <!-- Cardio Workout Fields -->
+            <StackPanel Visibility="{Binding IsCardioWorkout, Converter={StaticResource BooleanToVisibilityConverter}}">
+                <Label Content="Distance"/>
+                <TextBox Text="{Binding DistanceInput}"/>
+            </StackPanel>
+            
+            <Label Content="Calories"/>
             <TextBox Text="{Binding CaloriesBurnedInput, UpdateSourceTrigger=PropertyChanged}"/>
+            <Label Content="Notes"/>
             <TextBox Text="{Binding NotesInput, UpdateSourceTrigger=PropertyChanged}"/>
             <Button Content="Save" Command="{Binding SaveWorkoutCommand}"/>
             <Button Content="Return to Workouts" Command="{Binding ReturnCommand}"/>

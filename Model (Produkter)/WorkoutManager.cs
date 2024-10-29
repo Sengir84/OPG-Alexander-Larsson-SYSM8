@@ -43,7 +43,15 @@ namespace FitTracker.Model__Produkter_
         
         private void AddDefaultWorkout()
         {
-            WorkoutList.Add(new WorkoutModel { Date = new DateTime(2024, 10, 27, 16, 32, 00), Type = "Strength", Duration = new TimeSpan(1, 22, 30) });
+            WorkoutList.Add(new StrengthWorkout(
+            date: new DateTime(2024, 10, 27, 16, 32, 00), 
+            "Strength",                             
+            new TimeSpan(1, 22, 30),            
+            500,                          
+            "Full body workout",                    
+            "Dumbbells",                       
+            12                               
+));
         }
         
         

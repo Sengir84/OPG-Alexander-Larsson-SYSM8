@@ -1,7 +1,9 @@
 ﻿using FitTracker.Model__Produkter_;
 using FitTracker.MVVM;
+using FitTracker.View;
 using FitTracker.View__UI_;
 using System.Collections.ObjectModel;
+using System.Windows;
 
 namespace FitTracker.ViewModel.WorkoutViewModels
 {
@@ -19,9 +21,36 @@ namespace FitTracker.ViewModel.WorkoutViewModels
                 {
                     workoutTypeCombobox = value;
                     OnPropertyChanged(nameof(WorkoutTypeCombobox));
+                    UpdateWorkoutTypeVisibility();
                 }
             }
         }
+        private bool isStrengthWorkout;
+        public bool IsStrengthWorkout
+        {
+            get { return isStrengthWorkout; }
+            set
+            {
+                isStrengthWorkout = value;
+                OnPropertyChanged(nameof(IsStrengthWorkout));
+            }
+        }
+        private bool isCardioWorkout;
+        public bool IsCardioWorkout
+        {
+            get { return isCardioWorkout; }
+            set
+            {
+                isCardioWorkout = value;
+                OnPropertyChanged(nameof(IsCardioWorkout));
+            }
+        }
+        private void UpdateWorkoutTypeVisibility()
+        {
+            IsStrengthWorkout = WorkoutTypeCombobox == "Strength";
+            IsCardioWorkout = WorkoutTypeCombobox == "Cardio";
+        }
+
         private RelayCommand saveWorkoutCommand;
         public RelayCommand SaveWorkoutCommand
         {
@@ -50,17 +79,17 @@ namespace FitTracker.ViewModel.WorkoutViewModels
 
         public AddWorkoutWindowViewModel()
         {
-            WorkoutType = new ObservableCollection<string>()
-            {
-                "Strength",
-                "Cardio"
-            };
+            WorkoutType = new ObservableCollection<string>{"Strength","Cardio"};
+            WorkoutTypeCombobox = WorkoutType.First();
+            UpdateWorkoutTypeVisibility();
         }
         
         public TimeSpan DurationInput { get; set; }
         public int CaloriesBurnedInput { get; set; }
         public string NotesInput { get; set; }
-
+        public double DistanceInput {  get; set; }
+        public string EquipmentInput { get; set; }
+        public int RepetitionsInput { get; set; }
         private void ExecuteSaveWorkout(object obj)
         {
             SaveWorkout();
@@ -68,16 +97,22 @@ namespace FitTracker.ViewModel.WorkoutViewModels
 
         public void SaveWorkout()
         {
-            Console.WriteLine($"Selected Type: {WorkoutTypeCombobox}");
-            var workout = new WorkoutModel
-            {
-                Date = DateTime.Now, 
-                Type = WorkoutTypeCombobox, 
-                Duration = DurationInput, 
-                CaloriesBurned = CaloriesBurnedInput,
-                Notes = NotesInput 
-            };
+            WorkoutModel workout;
             
+            if (WorkoutTypeCombobox == "Strength")
+            {
+                workout = new StrengthWorkout(DateTime.Now, "Strength", DurationInput, CaloriesBurnedInput, NotesInput, EquipmentInput, RepetitionsInput);
+            }
+            else if (WorkoutTypeCombobox == "Cardio")
+            {
+                workout = new CardioWorkout(DateTime.Now, "Cardio", DurationInput, CaloriesBurnedInput, NotesInput, DistanceInput);
+            }
+            else
+            {
+                MessageBox.Show("Must choose a workout type");
+                return;
+            }
+
             WorkoutManager.Instance.AddWorkout(workout);
         }
         private void ExecuteReturn(object obj)
@@ -87,11 +122,10 @@ namespace FitTracker.ViewModel.WorkoutViewModels
 
         private void Return()
         {
-
-            var workoutWindowViewModel = new WorkoutWindowViewModel(WorkoutManager.Instance);
-            var workoutWindow = new WorkoutWindow { DataContext = workoutWindowViewModel };
-            workoutWindow.Show();
-            App.Current.Windows[0].Close(); 
+            if (App.Current.Windows.OfType<AddWorkoutWindow>().FirstOrDefault() is Window addWorkoutWindow)
+            {
+                addWorkoutWindow.Close();
+            }
         }
 
         
