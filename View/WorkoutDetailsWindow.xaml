@@ -7,7 +7,7 @@
         mc:Ignorable="d"
         Title="WorkoutDetailsWindow" Height="450" Width="800">
     <Window.Resources>
-        <BooleanToVisibilityConverter x:Key="BoolToVisibilityConverter" />
+        <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
     </Window.Resources>
 
     <Grid>
@@ -20,7 +20,7 @@
             <TextBox Text="{Binding Workout.Duration, UpdateSourceTrigger=PropertyChanged}" IsReadOnly="{Binding IsTextBoxReadOnly}"/>
                        
             <!-- Strength Workout -->
-            <StackPanel Visibility="{Binding IsStrengthWorkoutVisible, Converter={StaticResource BoolToVisibilityConverter}}">
+            <StackPanel Visibility="{Binding IsStrengthWorkoutVisible, Converter={StaticResource BooleanToVisibilityConverter}}">
                 <Label Content="Equipment"/>
                 <TextBox Text="{Binding Workout.Equipment, UpdateSourceTrigger=PropertyChanged}" IsReadOnly="{Binding IsTextBoxReadOnly}"/>
                 <Label Content="Repetitions"/>
@@ -28,7 +28,7 @@
             </StackPanel>
             
             <!-- Cardio Workout -->
-            <StackPanel Visibility="{Binding IsCardioWorkoutVisible, Converter={StaticResource BoolToVisibilityConverter}}">
+            <StackPanel Visibility="{Binding IsCardioWorkoutVisible, Converter={StaticResource BooleanToVisibilityConverter}}">
                 <Label Content="Distance"/>
                 <TextBox Text="{Binding Workout.Distance, UpdateSourceTrigger=PropertyChanged}" IsReadOnly="{Binding IsTextBoxReadOnly}"/>
             </StackPanel>
@@ -37,9 +37,9 @@
             <TextBox Text="{Binding Workout.CaloriesBurned, UpdateSourceTrigger=PropertyChanged}" IsReadOnly="{Binding IsTextBoxReadOnly}"/>
             <Label Content="Notes"/>
             <TextBox Text="{Binding Workout.Notes, UpdateSourceTrigger=PropertyChanged}" IsReadOnly="{Binding IsTextBoxReadOnly}"/>
-            <Button Content="Edit" Command="{Binding EditWorkoutCommand, UpdateSourceTrigger=PropertyChanged}"/>
-            <Button Content="Save" Command="{Binding SaveWorkoutCommand, UpdateSourceTrigger=PropertyChanged}"/>
-            
+            <Button Content="Edit" Command="{Binding EditWorkoutCommand}"/>
+            <Button Content="Save" Command="{Binding SaveWorkoutCommand}"/>
+            <Button Content="Copy Workout" Command="{Binding CopyWorkoutCommand}"/>
         </StackPanel>
     </Grid>
 </Window>

@@ -158,6 +158,18 @@ namespace FitTracker.ViewModel.WorkoutViewModels
                 }
             }
         }
+        private void UpdateCaloriesBurnedInput()
+        {
+            if (WorkoutTypeCombobox == "Strength")
+            {
+                CaloriesBurnedInput = new StrengthWorkout(DateTime.Now, "Strength", DurationInput, 0, NotesInput, EquipmentInput, RepetitionsInput).CalculateCaloriesBurned();
+            }
+            else if (WorkoutTypeCombobox == "Cardio")
+            {
+                CaloriesBurnedInput = new CardioWorkout(DateTime.Now, "Cardio", DurationInput, 0, NotesInput, DistanceInput).CalculateCaloriesBurned();
+            }
+        }
+        
         private string notesInput;
         public string NotesInput
         {
@@ -176,8 +188,8 @@ namespace FitTracker.ViewModel.WorkoutViewModels
             }
         }
 
-        private double distanceInput;
-        public double DistanceInput
+        private int distanceInput;
+        public int DistanceInput
         {
             get { return distanceInput; }
             set
@@ -186,6 +198,7 @@ namespace FitTracker.ViewModel.WorkoutViewModels
                 {
                     distanceInput = value;
                     OnPropertyChanged(nameof(DistanceInput));
+                    UpdateCaloriesBurnedInput();
                     CommandManager.InvalidateRequerySuggested();
                 }
             }
@@ -217,6 +230,7 @@ namespace FitTracker.ViewModel.WorkoutViewModels
                 {
                     repetitionsInput = value;
                     OnPropertyChanged(nameof(RepetitionsInput));
+                    UpdateCaloriesBurnedInput();
                     CommandManager.InvalidateRequerySuggested();
                 }
             }
@@ -234,10 +248,12 @@ namespace FitTracker.ViewModel.WorkoutViewModels
             if (WorkoutTypeCombobox == "Strength")
             {
                 workout = new StrengthWorkout(DateTime.Now, "Strength", DurationInput, CaloriesBurnedInput, NotesInput, EquipmentInput, RepetitionsInput);
+                workout.CaloriesBurned = workout.CalculateCaloriesBurned();
             }
             else if (WorkoutTypeCombobox == "Cardio")
             {
                 workout = new CardioWorkout(DateTime.Now, "Cardio", DurationInput, CaloriesBurnedInput, NotesInput, DistanceInput);
+                workout.CaloriesBurned = workout.CalculateCaloriesBurned();
             }
             else
             {

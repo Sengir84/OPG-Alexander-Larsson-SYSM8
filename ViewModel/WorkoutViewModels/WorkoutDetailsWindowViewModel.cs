@@ -1,6 +1,7 @@
 ﻿using FitTracker.Model__Produkter_;
 using FitTracker.MVVM;
 using FitTracker.View__UI_;
+using System.ComponentModel;
 
 namespace FitTracker.ViewModel.WorkoutViewModels
 {
@@ -43,10 +44,12 @@ namespace FitTracker.ViewModel.WorkoutViewModels
         {
             Workout = workout ?? throw new ArgumentNullException(nameof(workout));
             this.workoutManager = workoutManager ?? throw new ArgumentNullException(nameof(workoutManager));
+
             IsTextBoxReadOnly = true;
             UpdateWorkoutTypeVisibility();
+            IsValidationMessageVisible = false;
         }
-
+        
         private void UpdateWorkoutTypeVisibility()
         {
             IsStrengthWorkoutVisible = false;
@@ -101,32 +104,60 @@ namespace FitTracker.ViewModel.WorkoutViewModels
                 return saveWorkoutCommand;
             }
         }
+        private bool isValidationMessageVisible;
+        public bool IsValidationMessageVisible
+        {
+            get => isValidationMessageVisible;
+            set
+            {
+                if (isValidationMessageVisible != value)
+                {
+                    isValidationMessageVisible = value;
+                    OnPropertyChanged(nameof(IsValidationMessageVisible));
+                }
+            }
+        }
 
         private bool CanSaveWorkout(object obj)
         {
+            bool isValid = true;
+
             if (string.IsNullOrWhiteSpace(Workout.Type) ||
                 Workout.Date == default(DateTime) ||
                 (Workout.Duration is TimeSpan timespan && timespan == TimeSpan.Zero) ||
                 Workout.CaloriesBurned <= 0 ||
                 string.IsNullOrWhiteSpace(Workout.Notes))
             {
-                return false;
+                isValid = false;
             }
 
             else if (Workout is StrengthWorkout strengthWorkout)
             {
-                return !string.IsNullOrWhiteSpace(strengthWorkout.Equipment) && strengthWorkout.Repetitions > 0;
+                if (string.IsNullOrWhiteSpace(strengthWorkout.Equipment) || strengthWorkout.Repetitions <= 0) // Ensure Equipment is not empty and Repetitions > 0
+                {
+                    isValid = false;
+                }
             }
             else if (Workout is CardioWorkout cardioWorkout)
             {
-                return cardioWorkout.Distance > 0;
+                if (cardioWorkout.Distance <= 0) 
+                {
+                    isValid = false;
+                }
             }
-            return true;
+            IsValidationMessageVisible = !isValid;
+            return isValid;
+            
         }
 
         private void ExecuteSaveWorkout(object obj)
         {
-            SaveWorkout();
+            if (CanSaveWorkout(obj))
+            { 
+                SaveWorkout();
+                IsValidationMessageVisible = false;
+            }
+            else { IsValidationMessageVisible = true; }
         }
 
         private void ExecuteEditWorkout(object obj)
@@ -138,7 +169,7 @@ namespace FitTracker.ViewModel.WorkoutViewModels
         {
             IsTextBoxReadOnly = false;
         }
-
+        
         public void SaveWorkout()
         {
             foreach (var workout in workoutManager.WorkoutList)

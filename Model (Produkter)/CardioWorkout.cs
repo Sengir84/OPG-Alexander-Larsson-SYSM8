@@ -8,12 +8,12 @@ namespace FitTracker.Model__Produkter_
 {
     public class CardioWorkout : WorkoutModel
     {
-        private double distance;
-        public double Distance { get; set; }
+        private int distance;
+        public int Distance { get; set; }
      
 
 
-                public CardioWorkout(DateTime date, string type, TimeSpan duration, int caloriesBurned, string notes, double distance)
+                public CardioWorkout(DateTime date, string type, TimeSpan duration, int caloriesBurned, string notes, int distance)
         : base(date, "Cardio", duration, caloriesBurned, notes) 
         { 
             Distance = distance;
@@ -21,7 +21,7 @@ namespace FitTracker.Model__Produkter_
 
         public override int CalculateCaloriesBurned()
         {
-            throw new NotImplementedException();
+            return Distance * 60;
         }
     }
 }

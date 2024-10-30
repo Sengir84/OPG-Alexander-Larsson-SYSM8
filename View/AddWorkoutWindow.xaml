@@ -20,19 +20,19 @@
                     <!-- Strength Workout -->
             <StackPanel Visibility="{Binding IsStrengthWorkout, Converter={StaticResource BooleanToVisibilityConverter}}">
                 <Label Content="Equipment"/>
-                <TextBox Text="{Binding EquipmentInput}" />
+                <TextBox Text="{Binding EquipmentInput, UpdateSourceTrigger=PropertyChanged}" />
                 <Label Content="Repetitions"/>
-                <TextBox Text="{Binding RepetitionsInput}"/>
+                <TextBox Text="{Binding RepetitionsInput, UpdateSourceTrigger=PropertyChanged}"/>
             </StackPanel>
             
                     <!-- Cardio Workout -->
             <StackPanel Visibility="{Binding IsCardioWorkout, Converter={StaticResource BooleanToVisibilityConverter}}">
                 <Label Content="Distance"/>
-                <TextBox Text="{Binding DistanceInput}"/>
+                <TextBox Text="{Binding DistanceInput, UpdateSourceTrigger=PropertyChanged}"/>
             </StackPanel>
             
             <Label Content="Calories"/>
-            <TextBox Text="{Binding CaloriesBurnedInput, UpdateSourceTrigger=PropertyChanged}"/>
+            <TextBox Text="{Binding CaloriesBurnedInput, UpdateSourceTrigger=PropertyChanged}" IsReadOnly = "True" />
             <Label Content="Notes"/>
             <TextBox Text="{Binding NotesInput, UpdateSourceTrigger=PropertyChanged}"/>
             <Label Content="ALL FIELDS NEED TO BE FILLED" Visibility="{Binding IsValidationMessageVisible, Converter={StaticResource BooleanToVisibilityConverter}}" HorizontalAlignment="Center" Foreground="Red"/>
