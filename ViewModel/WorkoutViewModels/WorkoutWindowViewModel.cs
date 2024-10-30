@@ -118,10 +118,11 @@ namespace FitTracker.ViewModel.WorkoutViewModels
 
         private void ExecuteOpenWorkoutDetails(object obj)
         {
-            if (SelectedWorkout != null)
+            if (SelectedWorkout == null)
             {
-                OpenDetails(SelectedWorkout);
+                    MessageBox.Show("You need to select a workout first");
             }
+            OpenDetails(SelectedWorkout);
         }
 
         private void ExecuteUserDetails(object obj)
@@ -171,6 +172,7 @@ namespace FitTracker.ViewModel.WorkoutViewModels
                     workoutWindow.Close();
                 }
             }
+            
         }
         private void ExecuteSignout(object obj)
         {

@@ -37,6 +37,7 @@ namespace FitTracker
         public TimeSpan Duration { get; set; }
         public int CaloriesBurned { get; set; }
         public string Notes { get; set; }
+
         public abstract int CalculateCaloriesBurned();
     }
 
@@ -49,7 +50,7 @@ namespace FitTracker
     interface IStrengthWorkout
     {
         public int Repetitions { get; set; }
-
+        public string Equipment {  get; set; }
     }
 
     interface IMainWindow

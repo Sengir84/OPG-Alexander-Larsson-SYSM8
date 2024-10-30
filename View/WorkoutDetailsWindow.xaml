@@ -13,32 +13,32 @@
     <Grid>
         <StackPanel>
             <Label Content="Type"/>
-            <TextBox Text="{Binding Workout.Type}" IsReadOnly="{Binding IsTextBoxReadOnly}"/>
+            <TextBox Text="{Binding Workout.Type, UpdateSourceTrigger=PropertyChanged}" IsReadOnly="{Binding IsTextBoxReadOnly}"/>
             <Label Content="Date"/>
-            <TextBox Text="{Binding Workout.Date}" IsReadOnly="{Binding IsTextBoxReadOnly}"/>
+            <TextBox Text="{Binding Workout.Date, UpdateSourceTrigger=PropertyChanged}" IsReadOnly="{Binding IsTextBoxReadOnly}"/>
             <Label Content="Duration"/>
-            <TextBox Text="{Binding Workout.Duration}" IsReadOnly="{Binding IsTextBoxReadOnly}"/>
+            <TextBox Text="{Binding Workout.Duration, UpdateSourceTrigger=PropertyChanged}" IsReadOnly="{Binding IsTextBoxReadOnly}"/>
                        
             <!-- Strength Workout -->
             <StackPanel Visibility="{Binding IsStrengthWorkoutVisible, Converter={StaticResource BoolToVisibilityConverter}}">
                 <Label Content="Equipment"/>
-                <TextBox Text="{Binding Workout.Equipment}" />
+                <TextBox Text="{Binding Workout.Equipment, UpdateSourceTrigger=PropertyChanged}" IsReadOnly="{Binding IsTextBoxReadOnly}"/>
                 <Label Content="Repetitions"/>
-                <TextBox Text="{Binding Workout.Repetitions}" />
+                <TextBox Text="{Binding Workout.Repetitions, UpdateSourceTrigger=PropertyChanged}" IsReadOnly="{Binding IsTextBoxReadOnly}"/>
             </StackPanel>
             
             <!-- Cardio Workout -->
             <StackPanel Visibility="{Binding IsCardioWorkoutVisible, Converter={StaticResource BoolToVisibilityConverter}}">
                 <Label Content="Distance"/>
-                <TextBox Text="{Binding Workout.Distance}" />
+                <TextBox Text="{Binding Workout.Distance, UpdateSourceTrigger=PropertyChanged}" IsReadOnly="{Binding IsTextBoxReadOnly}"/>
             </StackPanel>
 
             <Label Content="Calories"/>
-            <TextBox Text="{Binding Workout.CaloriesBurned}" IsReadOnly="{Binding IsTextBoxReadOnly}"/>
+            <TextBox Text="{Binding Workout.CaloriesBurned, UpdateSourceTrigger=PropertyChanged}" IsReadOnly="{Binding IsTextBoxReadOnly}"/>
             <Label Content="Notes"/>
-            <TextBox Text="{Binding Workout.Notes}" IsReadOnly="{Binding IsTextBoxReadOnly}"/>
-            <Button Content="Edit" Command="{Binding EditWorkoutCommand}"/>
-            <Button Content="Save" Command="{Binding SaveWorkoutCommand}"/>
+            <TextBox Text="{Binding Workout.Notes, UpdateSourceTrigger=PropertyChanged}" IsReadOnly="{Binding IsTextBoxReadOnly}"/>
+            <Button Content="Edit" Command="{Binding EditWorkoutCommand, UpdateSourceTrigger=PropertyChanged}"/>
+            <Button Content="Save" Command="{Binding SaveWorkoutCommand, UpdateSourceTrigger=PropertyChanged}"/>
             
         </StackPanel>
     </Grid>

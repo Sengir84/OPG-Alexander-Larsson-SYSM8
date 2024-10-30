@@ -96,11 +96,34 @@ namespace FitTracker.ViewModel.WorkoutViewModels
             {
                 if (saveWorkoutCommand == null)
                 {
-                    saveWorkoutCommand = new RelayCommand(ExecuteSaveWorkout);
+                    saveWorkoutCommand = new RelayCommand(ExecuteSaveWorkout,CanSaveWorkout);
                 }
                 return saveWorkoutCommand;
             }
         }
+
+        private bool CanSaveWorkout(object obj)
+        {
+            if (string.IsNullOrWhiteSpace(Workout.Type) ||
+                Workout.Date == default(DateTime) ||
+                (Workout.Duration is TimeSpan timespan && timespan == TimeSpan.Zero) ||
+                Workout.CaloriesBurned <= 0 ||
+                string.IsNullOrWhiteSpace(Workout.Notes))
+            {
+                return false;
+            }
+
+            else if (Workout is StrengthWorkout strengthWorkout)
+            {
+                return !string.IsNullOrWhiteSpace(strengthWorkout.Equipment) && strengthWorkout.Repetitions > 0;
+            }
+            else if (Workout is CardioWorkout cardioWorkout)
+            {
+                return cardioWorkout.Distance > 0;
+            }
+            return true;
+        }
+
         private void ExecuteSaveWorkout(object obj)
         {
             SaveWorkout();

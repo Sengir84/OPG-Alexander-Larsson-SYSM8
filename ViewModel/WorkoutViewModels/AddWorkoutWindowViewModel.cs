@@ -4,6 +4,7 @@ using FitTracker.View;
 using FitTracker.View__UI_;
 using System.Collections.ObjectModel;
 using System.Windows;
+using System.Windows.Input;
 
 namespace FitTracker.ViewModel.WorkoutViewModels
 {
@@ -58,11 +59,50 @@ namespace FitTracker.ViewModel.WorkoutViewModels
             {
                 if (saveWorkoutCommand == null)
                 {
-                    saveWorkoutCommand = new RelayCommand(ExecuteSaveWorkout);
+                    saveWorkoutCommand ??= new RelayCommand(ExecuteSaveWorkout, CanSaveWorkout);
                 }
                 return saveWorkoutCommand;
             }
         }
+
+        private bool CanSaveWorkout(object obj)
+        {
+            bool isValid = DurationInput != TimeSpan.Zero &&
+                           CaloriesBurnedInput > 0 &&
+                           !string.IsNullOrWhiteSpace(NotesInput); 
+            
+            if (WorkoutTypeCombobox == "Strength")
+                
+            {
+                isValid &= !string.IsNullOrWhiteSpace(EquipmentInput) &&
+                 RepetitionsInput > 0;
+            }
+
+            
+            else if (WorkoutTypeCombobox == "Cardio")
+            {
+                isValid &= DistanceInput > 0;
+            }
+
+            IsValidationMessageVisible = !isValid;
+
+            return isValid;
+        }
+
+        private bool isValidationMessageVisible;
+        public bool IsValidationMessageVisible
+        {
+            get => isValidationMessageVisible;
+            set
+            {
+                if (isValidationMessageVisible != value)
+                {
+                    isValidationMessageVisible = value;
+                    OnPropertyChanged(nameof(IsValidationMessageVisible));
+                }
+            }
+        }
+
         private RelayCommand returnCommand;
 
         public RelayCommand ReturnCommand
@@ -83,13 +123,105 @@ namespace FitTracker.ViewModel.WorkoutViewModels
             WorkoutTypeCombobox = WorkoutType.First();
             UpdateWorkoutTypeVisibility();
         }
-        
-        public TimeSpan DurationInput { get; set; }
-        public int CaloriesBurnedInput { get; set; }
-        public string NotesInput { get; set; }
-        public double DistanceInput {  get; set; }
-        public string EquipmentInput { get; set; }
-        public int RepetitionsInput { get; set; }
+
+        private TimeSpan durationInput;
+        public TimeSpan DurationInput
+        {
+            get
+            {
+                return durationInput;
+            }
+            set
+            {
+                if (durationInput != value)
+                {
+                    durationInput = value;
+                    OnPropertyChanged(nameof(DurationInput));
+                    CommandManager.InvalidateRequerySuggested();
+                }
+            }
+        }
+        private int caloriesBurnedInput;
+        public int CaloriesBurnedInput
+        {
+            get
+            {
+                return caloriesBurnedInput;
+            }
+            set
+            {
+                if (caloriesBurnedInput != value)
+                {
+                    caloriesBurnedInput = value;
+                    OnPropertyChanged(nameof(CaloriesBurnedInput));
+                    CommandManager.InvalidateRequerySuggested();
+                }
+            }
+        }
+        private string notesInput;
+        public string NotesInput
+        {
+            get
+            {
+                return notesInput;
+            }
+            set
+            {
+                if (notesInput != value)
+                {
+                    notesInput = value;
+                    OnPropertyChanged(nameof(NotesInput));
+                    CommandManager.InvalidateRequerySuggested();
+                }
+            }
+        }
+
+        private double distanceInput;
+        public double DistanceInput
+        {
+            get { return distanceInput; }
+            set
+            {
+                if (distanceInput != value)
+                {
+                    distanceInput = value;
+                    OnPropertyChanged(nameof(DistanceInput));
+                    CommandManager.InvalidateRequerySuggested();
+                }
+            }
+             
+        }
+
+        private string equipmentInput;
+        public string EquipmentInput
+        {
+            get { return equipmentInput; }
+            set
+            {
+                if (equipmentInput != value)
+                {
+                    equipmentInput = value;
+                    OnPropertyChanged(nameof(EquipmentInput));
+                    CommandManager.InvalidateRequerySuggested();
+                }
+            }
+
+        }
+        private int repetitionsInput;
+        public int RepetitionsInput
+        {
+            get { return repetitionsInput; }
+            set
+            {
+                if (repetitionsInput != value)
+                {
+                    repetitionsInput = value;
+                    OnPropertyChanged(nameof(RepetitionsInput));
+                    CommandManager.InvalidateRequerySuggested();
+                }
+            }
+
+        }
         private void ExecuteSaveWorkout(object obj)
         {
             SaveWorkout();

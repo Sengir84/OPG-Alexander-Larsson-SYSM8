@@ -5,7 +5,7 @@
         xmlns:local="clr-namespace:FitTracker.View"
         xmlns:workout="clr-namespace:FitTracker.ViewModel.WorkoutViewModels" 
         
-        Title="AddWorkoutWindow" Height="450" Width="800">
+        Title="AddWorkoutWindow" Height="550" Width="800">
     <Window.Resources>
         <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
     </Window.Resources>
@@ -35,6 +35,7 @@
             <TextBox Text="{Binding CaloriesBurnedInput, UpdateSourceTrigger=PropertyChanged}"/>
             <Label Content="Notes"/>
             <TextBox Text="{Binding NotesInput, UpdateSourceTrigger=PropertyChanged}"/>
+            <Label Content="ALL FIELDS NEED TO BE FILLED" Visibility="{Binding IsValidationMessageVisible, Converter={StaticResource BooleanToVisibilityConverter}}" HorizontalAlignment="Center" Foreground="Red"/>
             <Button Content="Save" Command="{Binding SaveWorkoutCommand}"/>
             <Button Content="Return to Workouts" Command="{Binding ReturnCommand}"/>
             

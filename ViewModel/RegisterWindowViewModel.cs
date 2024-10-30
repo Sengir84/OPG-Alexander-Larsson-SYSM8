@@ -126,7 +126,6 @@ namespace FitTracker.ViewModel
             if (PasswordInput == ConfirmPasswordInput)
             {
                 userManager.AddUser(UsernameInput, passwordInput, CountryComboBox, SecurityQuestion, SecurityAnswer);
-                MessageBox.Show($"UsernameInput: {UsernameInput}, PasswordInput: {PasswordInput}, users in list {userManager.Users.Count} Question: {securityQuestion} answer{securityAnswer}");
                 var mainWindowViewModel = new MainWindowViewModel(UserManager.Instance);
                 var mainWindow = new MainWindow { DataContext = mainWindowViewModel };
                 mainWindow.Show();
