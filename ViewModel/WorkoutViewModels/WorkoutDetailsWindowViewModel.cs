@@ -2,6 +2,7 @@
 using FitTracker.MVVM;
 using FitTracker.View__UI_;
 using System.ComponentModel;
+using System.Windows;
 
 namespace FitTracker.ViewModel.WorkoutViewModels
 {
@@ -91,7 +92,7 @@ namespace FitTracker.ViewModel.WorkoutViewModels
                 return editWorkoutCommand;
             }
         }
-
+        
         private RelayCommand saveWorkoutCommand;
         public RelayCommand SaveWorkoutCommand
         {
@@ -104,6 +105,54 @@ namespace FitTracker.ViewModel.WorkoutViewModels
                 return saveWorkoutCommand;
             }
         }
+        private RelayCommand copyWorkoutCommand;
+        public RelayCommand CopyWorkoutCommand
+        {
+            get 
+            { 
+                if  (copyWorkoutCommand == null)
+                {
+                    copyWorkoutCommand = new RelayCommand(ExecuteCopyWorkout);
+                }
+                return copyWorkoutCommand;
+            }
+
+        }
+
+        private void ExecuteCopyWorkout(object obj)
+        {
+            IWorkout copiedWorkout;
+
+            if (Workout is StrengthWorkout strengthWorkout)
+            {
+                copiedWorkout = new StrengthWorkout(
+                    strengthWorkout.Date,
+                    strengthWorkout.Type,
+                    strengthWorkout.Duration,
+                    strengthWorkout.CaloriesBurned,
+                    strengthWorkout.Notes,
+                    strengthWorkout.Equipment,
+                    strengthWorkout.Repetitions);
+            }
+            else if (Workout is CardioWorkout cardioWorkout)
+            {
+                copiedWorkout = new CardioWorkout(
+                    cardioWorkout.Date,
+                    cardioWorkout.Type,
+                    cardioWorkout.Duration,
+                    cardioWorkout.CaloriesBurned,
+                    cardioWorkout.Notes,
+                    cardioWorkout.Distance);
+            }
+            else
+            {
+                MessageBox.Show("Unknown workout type");
+                return;
+            }
+
+            WorkoutManager.Instance.AddWorkout(copiedWorkout);
+        }
+
         private bool isValidationMessageVisible;
         public bool IsValidationMessageVisible
         {
@@ -172,7 +221,8 @@ namespace FitTracker.ViewModel.WorkoutViewModels
         
         public void SaveWorkout()
         {
-            foreach (var workout in workoutManager.WorkoutList)
+            var userWorkouts = UserManager.Instance.ActiveUser?.Workouts;
+            foreach (var workout in userWorkouts)
             {
                 if (workout == Workout)
                 {

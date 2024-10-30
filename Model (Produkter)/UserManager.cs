@@ -41,10 +41,61 @@ namespace FitTracker.Model__Produkter_
                 OnPropertyChanged(nameof(ActiveUser));
             }
         }
-
+        public bool IsAdmin()
+        {
+            return ActiveUser != null && ActiveUser.IsAdmin;
+        }
         private void DefaultUsers() 
-        { 
-            Users.Add(new User { Username = "Alex", Password = "Alexander!", Country = "Sverige" });
+        {
+            var admin = new AdminUser
+            {
+                Username = "admin",
+                Password = "password",
+                IsAdmin = true,
+                Workouts = new ObservableCollection<IWorkout>()
+            };
+            admin.Workouts.Add(new StrengthWorkout(
+            date: new DateTime(2024, 10, 27, 16, 32, 00),
+            "Strength",
+            new TimeSpan(1, 22, 30),
+            500,
+            "Full body workout",
+            "Dumbbells",
+            12));
+            admin.Workouts.Add(new CardioWorkout(
+            date: new DateTime(2024, 10, 27, 16, 32, 00),
+            "Cardio",
+            new TimeSpan(1, 0, 0),
+            400,
+            "Running workout",
+            5));
+
+            Users.Add(admin);
+
+            var alex = new User
+            {
+                Username = "Alex",
+                Password = "Alexander!",
+                Country = "Sverige",
+                Workouts = new ObservableCollection<IWorkout>() // Initialize workouts for Alex
+            };
+            alex.Workouts.Add(new CardioWorkout(
+            date: new DateTime(2024, 10, 27, 16, 32, 00),
+            "Cardio",
+            new TimeSpan(1, 0, 0),
+            400,
+            "Running workout",
+            5));
+            alex.Workouts.Add(new StrengthWorkout(
+            date: new DateTime(2024, 10, 27, 16, 32, 00),
+            "Strength",
+            new TimeSpan(1, 22, 30),
+            500,
+            "Full body workout",
+            "Dumbbells",
+            12));
+
+            Users.Add(alex);
         }
         public bool UniqueUsername(string username)
         {
@@ -73,7 +124,6 @@ namespace FitTracker.Model__Produkter_
             else
             {
                 Users.Add(new User { Username = username, Password = password, Country = Country,SecurityQuestion = securityQuestion, SecurityAnswer = securityAnswer});
-                
             }
         }
     }

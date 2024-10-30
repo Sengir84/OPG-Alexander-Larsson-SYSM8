@@ -7,20 +7,37 @@ using System.Windows;
 
 namespace FitTracker.ViewModel.WorkoutViewModels
 {
-    public class WorkoutWindowViewModel : ViewModelBase, IWorkoutsWindow
+    public class WorkoutWindowViewModel : ViewModelBase//, IWorkoutsWindow
     {
-        private readonly WorkoutManager workoutManager;
+        private readonly UserManager userManager;
+        private ObservableCollection<IWorkout> workoutList; 
         public ObservableCollection<IWorkout> WorkoutList
         {
-            get { return WorkoutManager.Instance.WorkoutList; }
-
-            set
+            get { return workoutList; }
+            private set
             {
-                WorkoutManager.Instance.WorkoutList = value;
+                workoutList = value;
                 OnPropertyChanged(nameof(WorkoutList));
             }
+            //get {
+            //    if (userManager.ActiveUser?.IsAdmin == true)
+            //    {
+            //        return WorkoutManager.Instance.AllWorkouts;
+            //    }
+            //    return userManager.ActiveUser?.Workouts;
+            //}
         }
-        
+        private ObservableCollection<IWorkout> allWorkouts;
+        public ObservableCollection<IWorkout> AllWorkouts
+        {
+            get { return allWorkouts; }
+            set
+            {
+                allWorkouts = value;
+                OnPropertyChanged(nameof(AllWorkouts));
+            }
+        }
+
         private IWorkout selectedWorkout;
         public IWorkout SelectedWorkout
         {
@@ -34,8 +51,28 @@ namespace FitTracker.ViewModel.WorkoutViewModels
     
         public WorkoutWindowViewModel(WorkoutManager workoutManager)
         {
-            this.workoutManager = workoutManager ?? throw new ArgumentNullException(nameof(workoutManager));
+            userManager = UserManager.Instance;
             ActiveUser = UserManager.Instance.ActiveUser;
+
+            UpdateWorkoutList();
+
+            if (userManager.ActiveUser is AdminUser)
+            {
+                workoutManager.PopulateAllWorkouts();
+                //adminUser.ManageAllWorkouts();
+            }
+        }
+
+        private void UpdateWorkoutList()
+        {
+            if (userManager.ActiveUser?.IsAdmin == true)
+            {
+                WorkoutList = WorkoutManager.Instance.AllWorkouts; // Admin sees all workouts
+            }
+            else
+            {
+                WorkoutList = userManager.ActiveUser?.Workouts ?? new ObservableCollection<IWorkout>(); // Regular users see their workouts
+            }
         }
 
         private User activeUser;
@@ -155,9 +192,14 @@ namespace FitTracker.ViewModel.WorkoutViewModels
         }
         public void RemoveWorkout()
         {
-            if (selectedWorkout != null)
+            if (SelectedWorkout != null)
             {
-                WorkoutManager.Instance.RemoveWorkout(selectedWorkout);
+                WorkoutManager.Instance.RemoveWorkout(SelectedWorkout);
+                UpdateWorkoutList(); // Update list after removal
+            }
+            else
+            {
+                MessageBox.Show("No workout selected to remove.");
             }
         }
 

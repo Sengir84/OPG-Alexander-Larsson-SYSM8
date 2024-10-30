@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -10,15 +11,6 @@ namespace FitTracker.Model__Produkter_
     public class WorkoutManager
     {
         private static WorkoutManager instance;
-
-        public ObservableCollection<IWorkout> WorkoutList { get; set; }
-
-        private WorkoutManager() 
-        { 
-            WorkoutList = new ObservableCollection<IWorkout>();
-            AddDefaultWorkout();
-        }
-
         public static WorkoutManager Instance
         {
             get
@@ -26,34 +18,62 @@ namespace FitTracker.Model__Produkter_
                 if (instance == null)
                 {
                     instance = new WorkoutManager();
+                    instance.PopulateAllWorkouts();
                 }
                 return instance;
             }
         }
-
-        public void AddWorkout(WorkoutModel workout)
+        public ObservableCollection<IWorkout> AllWorkouts { get; private set; } = new ObservableCollection<IWorkout>();
+        public void PopulateAllWorkouts()
         {
-            WorkoutList.Add(workout);
+            AllWorkouts.Clear();
+            foreach (var user in UserManager.Instance.Users)
+            {
+                foreach (var workout in user.Workouts)
+                {
+                    AllWorkouts.Add(workout);
+                }
+            }
+        }
+        public void AddWorkout(IWorkout workout)
+        {
+            if (UserManager.Instance.ActiveUser != null)
+            {
+                UserManager.Instance.ActiveUser.Workouts.Add(workout);
+                AllWorkouts.Add(workout); // Add the workout to the AllWorkouts list as well
+            }
         }
 
         public void RemoveWorkout(IWorkout workout)
         {
-            WorkoutList.Remove(workout);
+            var activeUser = UserManager.Instance.ActiveUser;
+            if (activeUser is AdminUser)
+            {
+                // Find and remove workout from the user who owns it
+                foreach (var user in UserManager.Instance.Users)
+                {
+                    if (user.Workouts.Contains(workout))
+                    {
+                        user.Workouts.Remove(workout); // Remove from user's workouts
+                        break; // Exit the loop once the workout is found and removed
+                    }
+                }
+                // Always remove from AllWorkouts after finding and removing from the user's workouts
+                AllWorkouts.Remove(workout);
+            }
+            else if (activeUser != null)
+            {
+                // For regular users, simply remove from their workouts
+                activeUser.Workouts.Remove(workout);
+            }
+            else
+            {
+                Debug.WriteLine("No active user to remove workout.");
+            }
         }
-        
-        private void AddDefaultWorkout()
-        {
-            WorkoutList.Add(new StrengthWorkout(
-            date: new DateTime(2024, 10, 27, 16, 32, 00), 
-            "Strength",                             
-            new TimeSpan(1, 22, 30),            
-            500,                          
-            "Full body workout",                    
-            "Dumbbells",                       
-            12                               
-));
-        }
-        
-        
+
+
+
+
     }
 }
