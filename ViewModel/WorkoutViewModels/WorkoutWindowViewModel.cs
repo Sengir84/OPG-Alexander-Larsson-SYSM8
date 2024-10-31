@@ -7,10 +7,76 @@ using System.Windows;
 
 namespace FitTracker.ViewModel.WorkoutViewModels
 {
-    public class WorkoutWindowViewModel : ViewModelBase//, IWorkoutsWindow
+    public class WorkoutWindowViewModel : ViewModelBase, IWorkoutsWindow
     {
         private readonly UserManager userManager;
-        private ObservableCollection<IWorkout> workoutList; 
+        public IUser User { get; }
+
+        #region Constructors
+        public WorkoutWindowViewModel(WorkoutManager workoutManager)
+        {
+            userManager = UserManager.Instance;
+            User = UserManager.Instance.ActiveUser;
+
+            UpdateWorkoutList();
+
+            if (userManager.ActiveUser is AdminUser)
+            {
+                workoutManager.PopulateAllWorkouts();
+
+            }
+        }
+        #endregion
+
+        #region Properties
+        private int? durationFilter { get; set; } = 0;
+
+        public int? DurationFilter
+        {
+            get { return durationFilter; }
+            set
+            {
+                if (durationFilter == value) return;
+
+                durationFilter = value;
+                OnPropertyChanged(nameof(DurationFilter));
+                UpdateWorkoutList();
+            }
+        }
+
+        private string typeFilter { get; set; }
+
+        public string TypeFilter
+        {
+            get { return typeFilter; }
+            set
+            {
+                if (typeFilter == value) return;
+
+                typeFilter = value;
+                OnPropertyChanged(nameof(TypeFilter));
+                UpdateWorkoutList();
+            }
+        }
+
+
+        private DateTime? dateFilter { get; set; }
+
+        public DateTime? DateFilter
+        {
+            get { return dateFilter; }
+            set
+            {
+                if (dateFilter == value) return;
+
+                dateFilter = value;
+                OnPropertyChanged(nameof(DateFilter));
+                UpdateWorkoutList();
+            }
+        }
+
+
+        private ObservableCollection<IWorkout> workoutList;
         public ObservableCollection<IWorkout> WorkoutList
         {
             get { return workoutList; }
@@ -19,13 +85,7 @@ namespace FitTracker.ViewModel.WorkoutViewModels
                 workoutList = value;
                 OnPropertyChanged(nameof(WorkoutList));
             }
-            //get {
-            //    if (userManager.ActiveUser?.IsAdmin == true)
-            //    {
-            //        return WorkoutManager.Instance.AllWorkouts;
-            //    }
-            //    return userManager.ActiveUser?.Workouts;
-            //}
+
         }
         private ObservableCollection<IWorkout> allWorkouts;
         public ObservableCollection<IWorkout> AllWorkouts
@@ -48,46 +108,10 @@ namespace FitTracker.ViewModel.WorkoutViewModels
                 OnPropertyChanged();
             }
         }
-    
-        public WorkoutWindowViewModel(WorkoutManager workoutManager)
-        {
-            userManager = UserManager.Instance;
-            ActiveUser = UserManager.Instance.ActiveUser;
 
-            UpdateWorkoutList();
+        #endregion
 
-            if (userManager.ActiveUser is AdminUser)
-            {
-                workoutManager.PopulateAllWorkouts();
-                //adminUser.ManageAllWorkouts();
-            }
-        }
-
-        private void UpdateWorkoutList()
-        {
-            if (userManager.ActiveUser?.IsAdmin == true)
-            {
-                WorkoutList = WorkoutManager.Instance.AllWorkouts; // Admin sees all workouts
-            }
-            else
-            {
-                WorkoutList = userManager.ActiveUser?.Workouts ?? new ObservableCollection<IWorkout>(); // Regular users see their workouts
-            }
-        }
-
-        private User activeUser;
-        public User ActiveUser
-        {
-            get { return activeUser; }
-            set
-            {
-                activeUser = value;
-                OnPropertyChanged(nameof(ActiveUser));
-            }
-        }
-
-        
-
+        #region RelayCommands
         private RelayCommand addWorkoutCommand;
         public RelayCommand AddWorkoutCommand
         {
@@ -123,7 +147,7 @@ namespace FitTracker.ViewModel.WorkoutViewModels
                 }
                 return workoutDetailsCommand;
             }
-            
+
         }
         private RelayCommand removeWorkoutCommand;
         public RelayCommand RemoveWorkoutCommand
@@ -142,7 +166,7 @@ namespace FitTracker.ViewModel.WorkoutViewModels
         {
             get
             {
-                if(signOutCommand == null)
+                if (signOutCommand == null)
                 {
                     signOutCommand = new RelayCommand(ExecuteSignout);
                 }
@@ -151,13 +175,44 @@ namespace FitTracker.ViewModel.WorkoutViewModels
             }
         }
 
-       
+        #endregion
+
+        #region Methods
+
+        private void UpdateWorkoutList()
+        {
+            IEnumerable<IWorkout> filteredWorkouts;
+            if (userManager.ActiveUser?.IsAdmin == true)
+            {
+                filteredWorkouts = WorkoutManager.Instance.AllWorkouts;
+            }
+            else
+            {
+                filteredWorkouts = userManager.ActiveUser?.Workouts ?? new ObservableCollection<IWorkout>(); // Regular users see their workouts
+            }
+
+            if (DurationFilter.HasValue)
+            {
+                filteredWorkouts = filteredWorkouts.Where(x => x.Duration >= TimeSpan.FromMinutes(DurationFilter.Value));
+            }
+            if (DateFilter.HasValue)
+            {
+                filteredWorkouts = filteredWorkouts.Where(x => x.Date == DateFilter.Value);
+            }
+            if (!string.IsNullOrEmpty(TypeFilter))
+            {
+                filteredWorkouts = filteredWorkouts.Where(x => x.Type.StartsWith(TypeFilter, StringComparison.OrdinalIgnoreCase));
+            }
+
+            WorkoutList = new ObservableCollection<IWorkout>(filteredWorkouts);
+
+        }
 
         private void ExecuteOpenWorkoutDetails(object obj)
         {
             if (SelectedWorkout == null)
             {
-                    MessageBox.Show("You need to select a workout first");
+                MessageBox.Show("You need to select a workout first");
             }
             OpenDetails(SelectedWorkout);
         }
@@ -170,10 +225,10 @@ namespace FitTracker.ViewModel.WorkoutViewModels
         public void UserDetails()
         {
             var userDetailsWindow = new UserDetailsWindow();
-            
+
             userDetailsWindow.Show();
         }
-        
+
 
         private void ExecuteAddworkout(object obj)
         {
@@ -184,18 +239,18 @@ namespace FitTracker.ViewModel.WorkoutViewModels
         {
             var addworkoutWindow = new AddWorkoutWindow();
             addworkoutWindow.Show();
-            
+
         }
-        public void ExecuteRemoveWorkout(object obj) 
-        {  
-            RemoveWorkout(); 
+        public void ExecuteRemoveWorkout(object obj)
+        {
+            RemoveWorkout();
         }
         public void RemoveWorkout()
         {
             if (SelectedWorkout != null)
             {
                 WorkoutManager.Instance.RemoveWorkout(SelectedWorkout);
-                UpdateWorkoutList(); // Update list after removal
+                UpdateWorkoutList();
             }
             else
             {
@@ -214,7 +269,7 @@ namespace FitTracker.ViewModel.WorkoutViewModels
                     workoutWindow.Close();
                 }
             }
-            
+
         }
         private void ExecuteSignout(object obj)
         {
@@ -224,12 +279,12 @@ namespace FitTracker.ViewModel.WorkoutViewModels
         public void SignOut()
         {
             UserManager.Instance.ActiveUser = null;
-            
+
             var mainWindowViewModel = new MainWindowViewModel();
             var mainWindow = new MainWindow { DataContext = mainWindowViewModel };
             mainWindow.Show();
             App.Current.Windows[0].Close();
         }
-
+        #endregion
     }
 }

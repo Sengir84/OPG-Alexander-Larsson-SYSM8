@@ -35,5 +35,22 @@ namespace FitTracker
             }
 
         }
+        private void NewPasswordBox_PasswordChanged(object sender, RoutedEventArgs e)
+        {
+            if (DataContext is MainWindowViewModel viewModel)
+            {
+                var passwordBox = sender as PasswordBox;
+                viewModel.NewPasswordInput = passwordBox.Password;
+            }
+        }
+
+        private void ConfirmPasswordBox_PasswordChanged(object sender, RoutedEventArgs e)
+        {
+            if (DataContext is MainWindowViewModel viewModel)
+            {
+                var passwordBox = sender as PasswordBox;
+                viewModel.ConfirmPasswordInput = passwordBox.Password;
+            }
+        }
     }
 }

@@ -5,18 +5,30 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:FitTracker.View__UI_"
         mc:Ignorable="d"
-        Title="WorkoutWindow" Height="450" Width="800">
+        Title="WorkoutWindow" Height="450" Width="900">
     <Grid>
         
         
         <StackPanel>
-            <TextBlock Text="{Binding ActiveUser.Username}" Width=" 100" HorizontalAlignment="Right"/>
+            <TextBlock Text="{Binding User.Username}" Width=" 100" HorizontalAlignment="Right"/>
             <TextBlock Text="WORKOUT" FontSize="100"/>
             <Button Content="Add workout" Command="{Binding AddWorkoutCommand}" Height="20"/>
             <Button Content="Remove Workout" Command="{Binding RemoveWorkoutCommand}"/>
         <Button Content="User Details" Command="{Binding UserDetailsCommand}"/>
             <Button Content="Workout Details" Command="{Binding WorkoutDetailsCommand}"/>
             <Button Content="Sign Out" Command="{Binding SignOutCommand}"/>
+
+            <TextBlock Text="Filters" />
+            <StackPanel Orientation="Horizontal">
+                <Label Content="Duration" Width="300" />
+                <Label Content="Type" Width="300" />
+                <Label Content="Date" Width="300" />
+            </StackPanel>
+            <StackPanel Orientation="Horizontal">
+                <TextBox Text="{Binding DurationFilter, UpdateSourceTrigger=PropertyChanged}" Width="300" />
+                <TextBox Text="{Binding TypeFilter, UpdateSourceTrigger=PropertyChanged}" Width="300" />
+                <DatePicker SelectedDate="{Binding DateFilter, UpdateSourceTrigger=PropertyChanged}" Width="300" />
+            </StackPanel>
             <DataGrid
                 IsReadOnly ="True"
                 AutoGenerateColumns="False"
@@ -24,24 +36,24 @@
                 CanUserDeleteRows="False"
                 ItemsSource="{Binding WorkoutList}"
                 SelectedItem="{Binding SelectedWorkout}">
-
                 <DataGrid.Columns>
                     <DataGridTextColumn
-            Width="4*"
-            Binding="{Binding Type}"
-            Header="Workout" />
+                        Width="4*"
+                        Binding="{Binding Type}"
+                        Header="Workout" />
                     <DataGridTextColumn
-            Width="4*"
-            Binding="{Binding Date}"
-            Header="Date" />
+                        Width="4*"
+                        Binding="{Binding Date}"
+                        Header="Date" />
                     
                     <DataGridTextColumn
-            Width="1*"
-            Binding="{Binding Duration}"
-            Header="Duration" />
+                        Width="1*"
+                        Binding="{Binding Duration}"
+                        Header="Duration" />
                 </DataGrid.Columns>
 
             </DataGrid>
+            
             
         </StackPanel>
         

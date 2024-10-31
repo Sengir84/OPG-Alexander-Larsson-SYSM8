@@ -8,11 +8,26 @@ namespace FitTracker.ViewModel.WorkoutViewModels
 {
     public class WorkoutDetailsWindowViewModel : ViewModelBase, IWorkoutDetailsWindow
     {
-        
         private readonly WorkoutManager workoutManager;
+
+        #region Constructors
+        public WorkoutDetailsWindowViewModel(IWorkout workout, WorkoutManager workoutManager)
+        {
+            Workout = workout ?? throw new ArgumentNullException(nameof(workout));
+            this.workoutManager = workoutManager ?? throw new ArgumentNullException(nameof(workoutManager));
+
+            IsTextBoxReadOnly = true;
+            UpdateWorkoutTypeVisibility();
+            IsValidationMessageVisible = false;
+        }
+        #endregion
+
+        #region Properties
+
         public IWorkout Workout { get; set; }
-        
+
         private bool isStrengthWorkoutVisible;
+
         public bool IsStrengthWorkoutVisible
         {
             get => isStrengthWorkoutVisible;
@@ -24,6 +39,7 @@ namespace FitTracker.ViewModel.WorkoutViewModels
         }
 
         private bool isCardioWorkoutVisible;
+
         public bool IsCardioWorkoutVisible
         {
             get => isCardioWorkoutVisible;
@@ -33,6 +49,7 @@ namespace FitTracker.ViewModel.WorkoutViewModels
                 OnPropertyChanged(nameof(IsCardioWorkoutVisible));
             }
         }
+
         public User ActiveUser
         {
             get
@@ -41,32 +58,8 @@ namespace FitTracker.ViewModel.WorkoutViewModels
             }
         }
 
-        public WorkoutDetailsWindowViewModel(IWorkout workout, WorkoutManager workoutManager)
-        {
-            Workout = workout ?? throw new ArgumentNullException(nameof(workout));
-            this.workoutManager = workoutManager ?? throw new ArgumentNullException(nameof(workoutManager));
-
-            IsTextBoxReadOnly = true;
-            UpdateWorkoutTypeVisibility();
-            IsValidationMessageVisible = false;
-        }
-        
-        private void UpdateWorkoutTypeVisibility()
-        {
-            IsStrengthWorkoutVisible = false;
-            IsCardioWorkoutVisible = false;
-
-            if (Workout.Type == "Cardio")
-            {
-                IsCardioWorkoutVisible = true;
-            }
-            else if (Workout.Type == "Strength")
-            {
-                IsStrengthWorkoutVisible= true;
-            }
-        }
-
         private bool isTextBoxReadOnly;
+
         public bool IsTextBoxReadOnly
         {
             get
@@ -80,6 +73,23 @@ namespace FitTracker.ViewModel.WorkoutViewModels
             }
         }
 
+        private bool isValidationMessageVisible;
+        public bool IsValidationMessageVisible
+        {
+            get => isValidationMessageVisible;
+            set
+            {
+                if (isValidationMessageVisible != value)
+                {
+                    isValidationMessageVisible = value;
+                    OnPropertyChanged(nameof(IsValidationMessageVisible));
+                }
+            }
+        }
+
+        #endregion
+
+        #region RelayCommands
         private RelayCommand editWorkoutCommand;
         public RelayCommand EditWorkoutCommand
         {
@@ -92,7 +102,7 @@ namespace FitTracker.ViewModel.WorkoutViewModels
                 return editWorkoutCommand;
             }
         }
-        
+
         private RelayCommand saveWorkoutCommand;
         public RelayCommand SaveWorkoutCommand
         {
@@ -100,7 +110,7 @@ namespace FitTracker.ViewModel.WorkoutViewModels
             {
                 if (saveWorkoutCommand == null)
                 {
-                    saveWorkoutCommand = new RelayCommand(ExecuteSaveWorkout,CanSaveWorkout);
+                    saveWorkoutCommand = new RelayCommand(ExecuteSaveWorkout, CanSaveWorkout);
                 }
                 return saveWorkoutCommand;
             }
@@ -108,15 +118,34 @@ namespace FitTracker.ViewModel.WorkoutViewModels
         private RelayCommand copyWorkoutCommand;
         public RelayCommand CopyWorkoutCommand
         {
-            get 
-            { 
-                if  (copyWorkoutCommand == null)
+            get
+            {
+                if (copyWorkoutCommand == null)
                 {
                     copyWorkoutCommand = new RelayCommand(ExecuteCopyWorkout);
                 }
                 return copyWorkoutCommand;
             }
 
+        }
+
+        #endregion
+
+        #region Methods
+
+        private void UpdateWorkoutTypeVisibility()
+        {
+            IsStrengthWorkoutVisible = false;
+            IsCardioWorkoutVisible = false;
+
+            if (Workout.Type == "Cardio")
+            {
+                IsCardioWorkoutVisible = true;
+            }
+            else if (Workout.Type == "Strength")
+            {
+                IsStrengthWorkoutVisible= true;
+            }
         }
 
         private void ExecuteCopyWorkout(object obj)
@@ -153,19 +182,7 @@ namespace FitTracker.ViewModel.WorkoutViewModels
             WorkoutManager.Instance.AddWorkout(copiedWorkout);
         }
 
-        private bool isValidationMessageVisible;
-        public bool IsValidationMessageVisible
-        {
-            get => isValidationMessageVisible;
-            set
-            {
-                if (isValidationMessageVisible != value)
-                {
-                    isValidationMessageVisible = value;
-                    OnPropertyChanged(nameof(IsValidationMessageVisible));
-                }
-            }
-        }
+        
 
         private bool CanSaveWorkout(object obj)
         {
@@ -241,6 +258,7 @@ namespace FitTracker.ViewModel.WorkoutViewModels
             App.Current.Windows[0].Close();
 
         }
-        
+       
+        #endregion
     }
 }

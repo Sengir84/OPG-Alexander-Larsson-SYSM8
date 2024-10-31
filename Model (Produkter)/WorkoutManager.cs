@@ -40,7 +40,7 @@ namespace FitTracker.Model__Produkter_
             if (UserManager.Instance.ActiveUser != null)
             {
                 UserManager.Instance.ActiveUser.Workouts.Add(workout);
-                AllWorkouts.Add(workout); // Add the workout to the AllWorkouts list as well
+                AllWorkouts.Add(workout); 
             }
         }
 
@@ -49,21 +49,21 @@ namespace FitTracker.Model__Produkter_
             var activeUser = UserManager.Instance.ActiveUser;
             if (activeUser is AdminUser)
             {
-                // Find and remove workout from the user who owns it
+                
                 foreach (var user in UserManager.Instance.Users)
                 {
                     if (user.Workouts.Contains(workout))
                     {
-                        user.Workouts.Remove(workout); // Remove from user's workouts
-                        break; // Exit the loop once the workout is found and removed
+                        user.Workouts.Remove(workout);
+                        break;
                     }
                 }
-                // Always remove from AllWorkouts after finding and removing from the user's workouts
+               
                 AllWorkouts.Remove(workout);
             }
             else if (activeUser != null)
             {
-                // For regular users, simply remove from their workouts
+                
                 activeUser.Workouts.Remove(workout);
             }
             else

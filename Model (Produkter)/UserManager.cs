@@ -77,7 +77,9 @@ namespace FitTracker.Model__Produkter_
                 Username = "Alex",
                 Password = "Alexander!",
                 Country = "Sverige",
-                Workouts = new ObservableCollection<IWorkout>() // Initialize workouts for Alex
+                SecurityQuestion = "I vilken stad föddes du?",
+                SecurityAnswer = "Trelleborg",
+                Workouts = new ObservableCollection<IWorkout>()
             };
             alex.Workouts.Add(new CardioWorkout(
             date: new DateTime(2024, 10, 27, 16, 32, 00),

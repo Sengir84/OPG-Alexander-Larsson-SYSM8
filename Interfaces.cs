@@ -8,7 +8,7 @@ using System.Windows.Controls;
 
 namespace FitTracker
 {
-    interface IPerson
+    public interface IPerson
     {
         public string UserName { get; set; }
         public string Password { get; set; }
@@ -16,7 +16,7 @@ namespace FitTracker
         public abstract void SignIn();
     }
 
-    interface IUser
+    public interface IUser
     {
         public string Country { get; set; }
         public string SecurityQuestion { get; set; }
@@ -25,7 +25,7 @@ namespace FitTracker
         public void ResetPassword(string securityAnswer);
     }
 
-    interface IAdminUser
+    public interface IAdminUser
     {
         public void ManageAllWorkouts();
     }
@@ -41,19 +41,19 @@ namespace FitTracker
         public abstract int CalculateCaloriesBurned();
     }
 
-    interface ICardioWorkout
+    public interface ICardioWorkout
     {
         public int Distance { get; set; }
 
     }
 
-    interface IStrengthWorkout
+    public interface IStrengthWorkout
     {
         public int Repetitions { get; set; }
         public string Equipment {  get; set; }
     }
 
-    interface IMainWindow
+    public interface IMainWindow
     {
         public string LabelTitle { get; set; }
         public string UsernameInput { get; set; }
@@ -64,14 +64,14 @@ namespace FitTracker
 
     public interface IWorkoutsWindow
     {
-
-        public ObservableCollection<IWorkout> WorkoutList {get; set;}
+        IUser User { get;}
+        public ObservableCollection<IWorkout> WorkoutList {get;}
         
         void AddWorkout();
         void RemoveWorkout();
         public void OpenDetails(IWorkout workout);
     }
-    interface IRegisterWindow
+    public interface IRegisterWindow
     {
         public string UsernameInput { get; set; }
         public string PasswordInput { get; set; }
@@ -80,14 +80,14 @@ namespace FitTracker
         public void RegisterNewUser();
     }
 
-    interface IWorkoutDetailsWindow
+    public interface IWorkoutDetailsWindow
     {
         public IWorkout Workout { get; set; }
 
         public void EditWorkout();
         public void SaveWorkout();
     }
-    interface IAddWorkoutWindow
+    public interface IAddWorkoutWindow
     {
         public TimeSpan DurationInput { get; set; }
         public int CaloriesBurnedInput { get; set; }
@@ -95,7 +95,7 @@ namespace FitTracker
 
         public void SaveWorkout();
     }
-    interface IUserDetailsWindow
+    public interface IUserDetailsWindow
     {
         public string UsernameInput { get; set; }
         public string PasswordInput { get; set; }

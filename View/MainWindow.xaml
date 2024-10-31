@@ -6,6 +6,9 @@
         xmlns:local="clr-namespace:FitTracker"
         mc:Ignorable="d"
         Title="MainWindow" Height="500" Width="800">
+    <Window.Resources>
+        <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
+    </Window.Resources>
     <Grid>
         <StackPanel>
             <Label Content="FitTrack"/>
@@ -13,8 +16,16 @@
             <PasswordBox PasswordChanged="PasswordInput"/>
             <Button Content="Sign in" Command="{Binding SignInCommand}"/>
             <Button Content="Register" Command="{Binding RegisterCommand}" />
-            <Button Content="Forgot Password" Command="{Binding PasswordReset}"/>
+            <Button Content="Forgot Password" Command="{Binding ForgotPasswordCommand}"/>
+            
+            <TextBlock Text="{Binding SecurityQuestion}" Visibility="{Binding IsQuestionVisible, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource BooleanToVisibilityConverter}}" />
+            <TextBox Text="{Binding SecurityAnswerInput}" Visibility="{Binding IsQuestionVisible, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource BooleanToVisibilityConverter}}" />
+            <Button Content="Submit Answer" Command="{Binding ChangePasswordCommand}" Visibility="{Binding IsQuestionVisible, Converter={StaticResource BooleanToVisibilityConverter}}" />
 
+            <PasswordBox x:Name="NewPasswordBox" PasswordChanged="NewPasswordBox_PasswordChanged" Visibility="{Binding IsPasswordResetVisible, Converter={StaticResource BooleanToVisibilityConverter}}" />
+            <PasswordBox x:Name="ConfirmPasswordBox" PasswordChanged="ConfirmPasswordBox_PasswordChanged" Visibility="{Binding IsPasswordResetVisible, Converter={StaticResource BooleanToVisibilityConverter}}" />
+
+            <Button Content="Change Password" Command="{Binding ResetPasswordCommand}" Visibility="{Binding IsPasswordResetVisible, Converter={StaticResource BooleanToVisibilityConverter}}" />
 
         </StackPanel>
     </Grid>

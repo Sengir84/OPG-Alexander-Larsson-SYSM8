@@ -25,15 +25,20 @@ namespace FitTracker.Model__Produkter_
             SecurityQuestion = securityQuestion;
             SecurityAnswer = securityAnswer;
         }
-
-        public void ResetPassword(string securityAnswer)
+        public bool VerifySecurityAnswer(string securityAnswer)
         {
-            throw new NotImplementedException();
+            return securityAnswer == SecurityAnswer;
         }
+
+        public void ResetPassword(string newPassword)
+        {
+            Password = newPassword;
+        }
+        
 
         public override void SignIn()
         {
-            throw new NotImplementedException();
+            UserManager.Instance.ActiveUser = this;
         }
     }
 }
