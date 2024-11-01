@@ -9,7 +9,26 @@ namespace FitTracker.ViewModel
 {
     public class UserDetailsWindowViewModel : ViewModelBase, IUserDetailsWindow
     {
+        #region Constructor
+        //initierar usermanager
         private UserManager userManager;
+        
+        public UserDetailsWindowViewModel(UserManager usermanager)
+        {
+            this.userManager = usermanager;
+            ActiveUser = usermanager.ActiveUser;
+            Countries = new ObservableCollection<string> { "Sverige", "Norge", "Danmark" };
+            UsernameInput = ActiveUser.Username;
+            CountryComboBox = ActiveUser.Country;
+            SaveCommand = new RelayCommand(ExecuteSaveUserDetails);
+            CancelCommand = new RelayCommand(ExecuteCancel);
+        }
+        #endregion
+
+        #region Properties
+        //Fields
+
+        public ObservableCollection<string> Countries { get; set; }
         public User ActiveUser { get; set; }
 
         private string usernameInput = string.Empty;
@@ -80,23 +99,14 @@ namespace FitTracker.ViewModel
                 OnPropertyChanged();
             }
         }
+        #endregion
 
-        public ObservableCollection<string> Countries { get; set; }
-
+        #region RelayCommand
         public RelayCommand SaveCommand { get; }
         public RelayCommand CancelCommand { get; }
-
-        public UserDetailsWindowViewModel(UserManager usermanager)
-        {
-            this.userManager = usermanager;
-            ActiveUser = usermanager.ActiveUser;
-            Countries = new ObservableCollection<string> { "Sverige", "Norge", "Danmark" };
-            UsernameInput = ActiveUser.Username;
-            CountryComboBox = ActiveUser.Country;
-            SaveCommand = new RelayCommand(ExecuteSaveUserDetails);
-            CancelCommand = new RelayCommand(ExecuteCancel);
-        }
-
+        #endregion
+        #region Methods
+        //kontroll för användarnamn
         private void ValidateUsername()
         {
             if (string.IsNullOrEmpty(UsernameInput) || UsernameInput.Length < 3)
@@ -112,7 +122,7 @@ namespace FitTracker.ViewModel
                 UsernameWarningMessage = string.Empty;
             }
         }
-
+        //Kontroll av lösenord (G nivås varianten, VG ligger i UserManager)
         private void ValidatePassword()
         {
             if (!string.IsNullOrEmpty(PasswordInput) && !string.IsNullOrEmpty(ConfirmPasswordInput))
@@ -131,13 +141,13 @@ namespace FitTracker.ViewModel
                 }
             }
         }
+        //Sparar nya värden till användaren och stänger fönstret
         public void ExecuteSaveUserDetails(object obj)
         {
             SaveUserDetails();
         }
         public void SaveUserDetails()
         {
-            
             ValidateUsername();
             ValidatePassword();
 
@@ -156,11 +166,12 @@ namespace FitTracker.ViewModel
                 }
             }
         }
+        
+        //Stänger fönstret
         private void ExecuteCancel(object obj) 
         {
             Cancel();
         }
-
         public void Cancel()
         {
             if (App.Current.Windows.OfType<UserDetailsWindow>().FirstOrDefault() is Window userDetailsWindow)
@@ -169,7 +180,8 @@ namespace FitTracker.ViewModel
             }
         }
     }
-    
+    #endregion
+
 
 }
     

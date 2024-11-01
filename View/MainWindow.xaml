@@ -6,6 +6,7 @@
         xmlns:local="clr-namespace:FitTracker"
         mc:Ignorable="d"
         Title="MainWindow" Height="500" Width="800" Background= "Crimson">
+    <!--Funktion för att ändra synligheten beroende på om en bool retunerar true eller false-->
     <Window.Resources>
         <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
     </Window.Resources>

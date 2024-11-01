@@ -9,6 +9,7 @@ namespace FitTracker.Model__Produkter_
 {
     public abstract class Person : ViewModelBase
     {
+        //Fields
         private string username;
         public string Username
         {
@@ -20,6 +21,7 @@ namespace FitTracker.Model__Produkter_
             }
         }
         public string Password { get; set; }
+        //Metod som ska ärvas
         public abstract void SignIn();
     }
     

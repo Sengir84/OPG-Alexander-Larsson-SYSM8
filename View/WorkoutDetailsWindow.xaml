@@ -6,12 +6,14 @@
         xmlns:local="clr-namespace:FitTracker.View__UI_"
         mc:Ignorable="d"
         Title="WorkoutDetailsWindow" Height="450" Width="800" Background="Crimson">
+    <!--Funktion för att ändra synligheten beroende på om en bool retunerar true eller false-->
     <Window.Resources>
         <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
     </Window.Resources>
 
     <Grid>
         <StackPanel>
+            <!--Generella fält-->
             <Label Content="Type" Foreground="LightGray"/>
             <TextBox Text="{Binding Workout.Type, UpdateSourceTrigger=PropertyChanged}" IsReadOnly="{Binding IsTextBoxReadOnly}"/>
             <Label Content="Date" Foreground="LightGray"/>
@@ -32,11 +34,12 @@
                 <Label Content="Distance" Foreground="LightGray"/>
                 <TextBox Text="{Binding Workout.Distance, UpdateSourceTrigger=PropertyChanged}" IsReadOnly="{Binding IsTextBoxReadOnly}"/>
             </StackPanel>
-
+            <!--Generella fält-->
             <Label Content="Calories" Foreground="LightGray"/>
             <TextBox Text="{Binding Workout.CaloriesBurned, UpdateSourceTrigger=PropertyChanged}" IsReadOnly="{Binding IsTextBoxReadOnly}"/>
             <Label Content="Notes" Foreground="LightGray"/>
             <TextBox Text="{Binding Workout.Notes, UpdateSourceTrigger=PropertyChanged}" IsReadOnly="{Binding IsTextBoxReadOnly}"/>
+            <!--Knappar-->
             <Button Content="Edit" Command="{Binding EditWorkoutCommand}" Width="100" Margin="10" Background="Gray"/>
             <Button Content="Save and exit" Command="{Binding SaveWorkoutCommand}" Width="100" Background="Gray"/>
             <Button Content="Copy Workout" Command="{Binding CopyWorkoutCommand}" Width="100" Background="Gray" Margin="10"/>

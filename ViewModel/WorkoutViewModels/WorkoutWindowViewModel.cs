@@ -9,11 +9,11 @@ namespace FitTracker.ViewModel.WorkoutViewModels
 {
     public class WorkoutWindowViewModel : ViewModelBase, IWorkoutsWindow
     {
-
+        //Initierar Usermanager
         private readonly UserManager userManager;
-        public IUser User { get; }
 
         #region Constructors
+        //Konstruktor
         public WorkoutWindowViewModel(WorkoutManager workoutManager)
         {
             userManager = UserManager.Instance;
@@ -31,6 +31,7 @@ namespace FitTracker.ViewModel.WorkoutViewModels
         #endregion
 
         #region Properties
+        public IUser User { get; }
         private int? durationFilter { get; set; } = 0;
 
         public int? DurationFilter
@@ -115,6 +116,7 @@ namespace FitTracker.ViewModel.WorkoutViewModels
         #endregion
 
         #region RelayCommands
+        //RelayCommands
         private RelayCommand addWorkoutCommand;
         public RelayCommand AddWorkoutCommand
         {
@@ -177,12 +179,26 @@ namespace FitTracker.ViewModel.WorkoutViewModels
 
             }
         }
+        private RelayCommand showInfoCommand;
+        public RelayCommand ShowInfoCommand
+        {
+            get
+            {
+                if (showInfoCommand == null)
+                {
+                    showInfoCommand = new RelayCommand(ExecuteShowInfo);
+                }
+                return showInfoCommand;
+            }
+        }
 
-        #endregion
+        
+            #endregion
 
         #region Methods
-        
-        private void UpdateWorkoutList()
+            //sök metod för workoutlistan. Baserad på Workout type, duration, och date. 
+            //Om användaren är admin hämtas hela listan för filtrering om vanlig user hämtas activeusers lista
+            private void UpdateWorkoutList()
         {
             IEnumerable<IWorkout> filteredWorkouts;
             if (userManager.ActiveUser?.IsAdmin == true)
@@ -193,38 +209,30 @@ namespace FitTracker.ViewModel.WorkoutViewModels
             {
                 filteredWorkouts = userManager.ActiveUser?.Workouts ?? new ObservableCollection<IWorkout>(); 
             }
-
+            
             if (DurationFilter.HasValue)
             {
+                
                 filteredWorkouts = filteredWorkouts.Where(x => x.Duration >= TimeSpan.FromMinutes(DurationFilter.Value));
             }
             if (DateFilter.HasValue)
             {
                 filteredWorkouts = filteredWorkouts.Where(x => x.Date == DateFilter.Value);
             }
+                //Om type filter rutan inte är null
             if (!string.IsNullOrEmpty(TypeFilter))
-            {
+            {   //Loopar igenom listan och filtrerar ut baserat på input i Typefilter inputrutan och sparar sen i den filtreradelistan
                 filteredWorkouts = filteredWorkouts.Where(x => x.Type.StartsWith(TypeFilter, StringComparison.OrdinalIgnoreCase));
             }
-
+            //Lista som håller de filtrerade workoutsen
             WorkoutList = new ObservableCollection<IWorkout>(filteredWorkouts);
-
         }
-
-        private void ExecuteOpenWorkoutDetails(object obj)
-        {
-            if (SelectedWorkout == null)
-            {
-                MessageBox.Show("You need to select a workout first");
-            }
-            OpenDetails(SelectedWorkout);
-        }
-
+        
+        //Öppnar fönster med användarens information
         private void ExecuteUserDetails(object obj)
         {
             UserDetails();
         }
-
         public void UserDetails()
         {
             var userDetailsWindow = new UserDetailsWindow(userManager);
@@ -232,19 +240,18 @@ namespace FitTracker.ViewModel.WorkoutViewModels
             userDetailsWindow.Show();
         }
 
-
+        //Öppnar fönstret för att lägga till en workout
         private void ExecuteAddworkout(object obj)
         {
             AddWorkout();
         }
-
         public void AddWorkout()
         {
             var addworkoutWindow = new AddWorkoutWindow();
             addworkoutWindow.Show();
-
-            
         }
+
+        //Metod för att ta bort en workout
         public void ExecuteRemoveWorkout(object obj)
         {
             RemoveWorkout();
@@ -262,6 +269,15 @@ namespace FitTracker.ViewModel.WorkoutViewModels
             }
         }
 
+        //Öppnar nytt fönster med detaljerad information om ett valt träningspass
+        private void ExecuteOpenWorkoutDetails(object obj)
+        {
+            if (SelectedWorkout == null)
+            {
+                MessageBox.Show("You need to select a workout first");
+            }
+            OpenDetails(SelectedWorkout);
+        }
         public void OpenDetails(IWorkout workout)
         {
             if (SelectedWorkout != null)
@@ -274,13 +290,13 @@ namespace FitTracker.ViewModel.WorkoutViewModels
                     workoutWindow.Close();
                 }
             }
-
         }
+
+        //Loggar ut activeuser och återvänder till loginskärmen
         private void ExecuteSignout(object obj)
         {
             SignOut();
         }
-
         public void SignOut()
         {
             UserManager.Instance.ActiveUser = null;
@@ -289,6 +305,13 @@ namespace FitTracker.ViewModel.WorkoutViewModels
             var mainWindow = new MainWindow { DataContext = mainWindowViewModel };
             mainWindow.Show();
             App.Current.Windows[0].Close();
+        }
+        //Inforuta i form av en messagebox
+        private void ExecuteShowInfo(object obj)
+        {
+            MessageBox.Show("FitTracker is the all in one app for keeping track of your Workouts." +
+                " Fittrack was created by a gardengnome called Ragnar that´s stuck in a cellar until the app has made one billion Dollars.\n" +
+                "FitTrack HQ adress: I don´t know im locked in the cellar");
         }
         #endregion
     }

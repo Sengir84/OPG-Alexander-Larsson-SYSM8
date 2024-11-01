@@ -10,7 +10,9 @@ namespace FitTracker.Model__Produkter_
 {
     public class WorkoutManager
     {
+        //Skapa singleton av Workoutmanager så att den kan användas överallt
         private static WorkoutManager instance;
+        //Returnerar Workoutmanagern
         public static WorkoutManager Instance
         {
             get
@@ -23,8 +25,10 @@ namespace FitTracker.Model__Produkter_
                 return instance;
             }
         }
+        //Lista som samlar alla workouts till admin
         public ObservableCollection<IWorkout> AllWorkouts { get; private set; } = new ObservableCollection<IWorkout>();
-
+        
+        //Metod för att lägga till workouts i Allworkouts
         public void PopulateAllWorkouts()
         {
             AllWorkouts.Clear();
@@ -36,9 +40,9 @@ namespace FitTracker.Model__Produkter_
                 }
             }
         }
-
+        //En action som triggas för att uppdatera listan när man sparar en ny workout
         public event Action OnWorkoutAdded;
-
+        //Metod för att lägga till workout i både workouts och Allworkouts
         public void AddWorkout(IWorkout workout)
         {
             if (UserManager.Instance.ActiveUser != null)
@@ -49,7 +53,8 @@ namespace FitTracker.Model__Produkter_
                 
             }
         }
-
+        //Metod för att ta bort workouts där admins tar bort både för sig själv och 
+        //andra users genom att loopa igenom alla workoutslistor
         public void RemoveWorkout(IWorkout workout)
         {
             var activeUser = UserManager.Instance.ActiveUser;
@@ -64,12 +69,12 @@ namespace FitTracker.Model__Produkter_
                         break;
                     }
                 }
-               
+               //Tar bort från alla workouts
                 AllWorkouts.Remove(workout);
             }
             else if (activeUser != null)
             {
-                
+                //Tar bort från nuvarande inloggade user
                 activeUser.Workouts.Remove(workout);
             }
             else

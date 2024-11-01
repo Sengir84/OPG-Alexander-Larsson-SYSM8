@@ -9,7 +9,9 @@ using System.Windows.Input;
 namespace FitTracker.Model__Produkter_
 {
     public class StrengthWorkout : WorkoutModel, INotifyPropertyChanged
-    {   public string Equipment {  get; set; }
+    {   
+        //Fields
+        public string Equipment {  get; set; }
         private int repetitions;
         public int Repetitions
         {
@@ -27,6 +29,7 @@ namespace FitTracker.Model__Produkter_
                 }
             }
         }
+        //Konstruktor
         public StrengthWorkout(DateTime date, string type, TimeSpan duration, int caloriesBurned, string notes, string equipment, int repetitions)
         : base(date, "Strength", duration, caloriesBurned, notes) 
         { 
@@ -34,7 +37,7 @@ namespace FitTracker.Model__Produkter_
             Repetitions = repetitions;
         }
         
-
+        //Metod för att räkna ut brända kalorier för strength workout
         public override int CalculateCaloriesBurned()
         {
 

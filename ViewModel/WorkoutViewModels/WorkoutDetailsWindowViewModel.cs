@@ -8,9 +8,11 @@ namespace FitTracker.ViewModel.WorkoutViewModels
 {
     public class WorkoutDetailsWindowViewModel : ViewModelBase, IWorkoutDetailsWindow
     {
+        //Initierar WorkoutManager
         private readonly WorkoutManager workoutManager;
 
         #region Constructors
+        //Konstruktor
         public WorkoutDetailsWindowViewModel(IWorkout workout, WorkoutManager workoutManager)
         {
             Workout = workout ?? throw new ArgumentNullException(nameof(workout));
@@ -23,7 +25,7 @@ namespace FitTracker.ViewModel.WorkoutViewModels
         #endregion
 
         #region Properties
-
+        //Properties
         public IWorkout Workout { get; set; }
 
         private bool isStrengthWorkoutVisible;
@@ -90,6 +92,7 @@ namespace FitTracker.ViewModel.WorkoutViewModels
         #endregion
 
         #region RelayCommands
+        //RelayCommands
         private RelayCommand editWorkoutCommand;
         public RelayCommand EditWorkoutCommand
         {
@@ -132,7 +135,7 @@ namespace FitTracker.ViewModel.WorkoutViewModels
         #endregion
 
         #region Methods
-
+        //Uppdaterar synlighet baserat på träningspass
         private void UpdateWorkoutTypeVisibility()
         {
             IsStrengthWorkoutVisible = false;
@@ -147,7 +150,7 @@ namespace FitTracker.ViewModel.WorkoutViewModels
                 IsStrengthWorkoutVisible= true;
             }
         }
-
+        //Metod för att kopiera träningspass
         private void ExecuteCopyWorkout(object obj)
         {
             IWorkout copiedWorkout;
@@ -182,8 +185,7 @@ namespace FitTracker.ViewModel.WorkoutViewModels
             WorkoutManager.Instance.AddWorkout(copiedWorkout);
         }
 
-        
-
+        //Kontroll för att se om det går att spara en workout
         private bool CanSaveWorkout(object obj)
         {
             bool isValid = true;
@@ -215,7 +217,7 @@ namespace FitTracker.ViewModel.WorkoutViewModels
             return isValid;
             
         }
-
+        //Sparar träningspass
         private void ExecuteSaveWorkout(object obj)
         {
             if (CanSaveWorkout(obj))
@@ -230,12 +232,12 @@ namespace FitTracker.ViewModel.WorkoutViewModels
         {
             EditWorkout();
         }
-
+        //Metod för att göra fält redigerbara
         public void EditWorkout()
         {
             IsTextBoxReadOnly = false;
         }
-        
+        //Metod för att spara en workout
         public void SaveWorkout()
         {
             var userWorkouts = UserManager.Instance.ActiveUser?.Workouts;

@@ -7,10 +7,37 @@ namespace FitTracker.ViewModel
 {
     public class RegisterWindowViewModel : ViewModelBase, IRegisterWindow
     {
+        //Initierar Usermanager
         private UserManager userManager;
+        //listor för land och säkerhetsfrågor
         public ObservableCollection<string> Countries { get; set; }
         public ObservableCollection<string> SecurityQuestionList { get; set; }
+        #region Constructors
+        //Konstruktor
+        public RegisterWindowViewModel() : this(UserManager.Instance) { }
+        public RegisterWindowViewModel(UserManager userManager)
+        {
+            this.userManager = userManager;
 
+            AddUserCommand = new RelayCommand(ExecuteRegisterNewUser, CanRegisterNewUser);
+            Countries = new ObservableCollection<string>
+            {
+                "Sverige",
+                "Danmark",
+                "Norge",
+                "Finland",
+                "Nordpolen"
+            };
+            SecurityQuestionList = new ObservableCollection<string>
+            {
+                "Vad hette ditt första husdjur?",
+                "I vilken stad föddes du?",
+                "Vem är din favoritkaraktär i Bolibumpa"
+            };
+        }
+        #endregion
+        #region Properties
+        //Fields
         private string usernameInput;
         public string UsernameInput
         {
@@ -21,7 +48,6 @@ namespace FitTracker.ViewModel
                 OnPropertyChanged(nameof(UsernameInput));
             }
         }
-
         private string countryComboBox;
         public string CountryComboBox
         {
@@ -86,37 +112,18 @@ namespace FitTracker.ViewModel
                 OnPropertyChanged(nameof(SecurityAnswer));
             }
         }
+        #endregion
+        #region RelayCommands
         public RelayCommand AddUserCommand { get; }
-
-        public RegisterWindowViewModel() : this(UserManager.Instance) { }
-        public RegisterWindowViewModel(UserManager userManager)
-        {
-            this.userManager = userManager;
-
-            AddUserCommand = new RelayCommand(ExecuteRegisterNewUser, CanRegisterNewUser);
-            Countries = new ObservableCollection<string>
-            {
-                "Sverige",
-                "Danmark",
-                "Norge",
-                "Finland",
-                "Nordpolen"
-            };
-            SecurityQuestionList = new ObservableCollection<string>
-            {
-                "Vad hette ditt första husdjur?",
-                "I vilken stad föddes du?",
-                "Vem är din favoritkaraktär i Bolibumpa"
-            };
-        }
-
-       
+        #endregion
+        #region Methods
+        //Kontrollerar att ny användare uppfyller kraven
         private bool CanRegisterNewUser(object arg)
         {
             return !string.IsNullOrWhiteSpace(UsernameInput) && !string.IsNullOrWhiteSpace(PasswordInput) 
                 && !string.IsNullOrEmpty(ConfirmPasswordInput) && CountryComboBox != null ;
         }
-        
+        //Registrerar den nya användaren och stänger fönstret
         private void ExecuteRegisterNewUser(object obj)
         {
             RegisterNewUser();
@@ -137,8 +144,7 @@ namespace FitTracker.ViewModel
                 MessageBox.Show("Lösenord och kontroll stämmer inte överens");
             }
         }
-        
-
+        #endregion
     }
-    
+
 }

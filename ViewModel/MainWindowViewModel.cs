@@ -11,16 +11,20 @@ namespace FitTracker.ViewModel
 {
     public class MainWindowViewModel : ViewModelBase, IMainWindow
     {
-        private UserManager userManager;
-        private User currentUser;
+        #region Constructors
+        //Konstruktor
         public MainWindowViewModel() : this(UserManager.Instance) { }
         public MainWindowViewModel(UserManager userManager)
         {
             this.userManager = userManager;
             FontFamily = "Arial";
-
         }
-        public RelayCommand AddUserCommand { get; }
+        //Fields
+        private UserManager userManager;
+        private User currentUser;
+        #endregion
+        #region Properties
+        //Properties
         public string LabelTitle { get; set; }
 
         private string passwordInput;
@@ -48,8 +52,6 @@ namespace FitTracker.ViewModel
                 OnPropertyChanged(nameof(FontFamily));
             }
         }
-
-        
         private string usernameInput;
         public string UsernameInput
         {
@@ -80,8 +82,6 @@ namespace FitTracker.ViewModel
                 OnPropertyChanged(nameof(SecurityQuestion));
             }
         }
-
-
         private string newPasswordInput;
         public string NewPasswordInput
         {
@@ -92,28 +92,12 @@ namespace FitTracker.ViewModel
                 OnPropertyChanged(nameof(NewPasswordInput));
             }
         }
-
         private string confirmPasswordInput;
         public string ConfirmPasswordInput
         {
             get => confirmPasswordInput;
             set { confirmPasswordInput = value; OnPropertyChanged(); }
         }
-
-        private void NewPasswordBox_PasswordChanged(object sender, RoutedEventArgs e)
-        {
-            var passwordBox = sender as PasswordBox;
-            NewPasswordInput = passwordBox.Password;  
-        }
-
-        private void ConfirmPasswordBox_PasswordChanged(object sender, RoutedEventArgs e)
-        {
-            var passwordBox = sender as PasswordBox;
-            ConfirmPasswordInput = passwordBox.Password;  
-        }
-        
-        
-
         private bool isQuestionVisible;
         public bool IsQuestionVisible
         {
@@ -127,8 +111,10 @@ namespace FitTracker.ViewModel
             get => isPasswordResetVisible;
             set { isPasswordResetVisible = value; OnPropertyChanged(); }
         }
-
-
+        #endregion
+        #region RelayCommands
+        //RelayCommands
+        public RelayCommand AddUserCommand { get; }
         private RelayCommand registerCommand;
         public RelayCommand RegisterCommand
         {
@@ -155,6 +141,32 @@ namespace FitTracker.ViewModel
         }
         public RelayCommand ForgotPasswordCommand => new RelayCommand(ExecuteForgotPassword);
         public RelayCommand ChangePasswordCommand => new RelayCommand(ExecuteChangePassword);
+        private RelayCommand signInCommand;
+        public RelayCommand SignInCommand
+        {
+            get
+            {
+                if (signInCommand == null)
+                {
+                    signInCommand = new RelayCommand(ExecuteSignIn);
+                }
+                return signInCommand;
+            }
+        }
+        #endregion
+        #region Methods
+        //Metoder för att hantera den krypterade texten i passwordboxes
+        private void NewPasswordBox_PasswordChanged(object sender, RoutedEventArgs e)
+        {
+            var passwordBox = sender as PasswordBox;
+            NewPasswordInput = passwordBox.Password;
+        }
+        private void ConfirmPasswordBox_PasswordChanged(object sender, RoutedEventArgs e)
+        {
+            var passwordBox = sender as PasswordBox;
+            ConfirmPasswordInput = passwordBox.Password;
+        }
+        //Metod för glömt lösenord funktionen som gör sequrity question delen synlig för användaren
         private void ExecuteForgotPassword(object obj)
         {
             currentUser = userManager.Users.FirstOrDefault(u => u.Username == UsernameInput);
@@ -162,26 +174,26 @@ namespace FitTracker.ViewModel
             if (currentUser != null)
             {
                 SecurityQuestion = currentUser.SecurityQuestion;
-                IsQuestionVisible = true;  
+                IsQuestionVisible = true;
             }
             else
             {
                 MessageBox.Show("Enter username in user field before pushing the button");
             }
         }
-        
+        //Metod som låter användaren sätta ett nytt lösenord om den svarat rätt på frågan
         private void ExecuteChangePassword(object obj)
         {
             var currentUser = userManager.Users.FirstOrDefault(u => u.Username == UsernameInput);
 
             if (currentUser != null)
             {
-                
+
                 if (currentUser.VerifySecurityAnswer(SecurityAnswerInput))
                 {
-                    
+
                     IsPasswordResetVisible = true;
-                    IsQuestionVisible = false;  
+                    IsQuestionVisible = false;
                 }
                 else
                 {
@@ -193,37 +205,31 @@ namespace FitTracker.ViewModel
                 MessageBox.Show("User not found.");
             }
         }
-
-
-
+        //Öppnar fönstret för att registrera ny användare
         private void ExecuteRegister(object parameter)
         {
             Register();
         }
-        
         public void Register()
         {
-
             var registerWindowViewModel = new RegisterWindowViewModel(UserManager.Instance);
             var registerWindow = new RegisterWindow { DataContext = registerWindowViewModel };
             registerWindow.Show();
 
             App.Current.Windows[0].Close();
         }
-
+        //Logik för att sätta nytt lösenord till en användare och kontroller av lösenord
         private void ExecuteResetPassword(object obj)
         {
-            ResetPassword(); 
+            ResetPassword();
         }
 
         private void ResetPassword()
         {
             if (NewPasswordInput == ConfirmPasswordInput)
             {
-
-                //var user = userManager.Users.FirstOrDefault(u => u.Username == UsernameInput);
-
                 bool isValidPassword = userManager.ValidPassword(NewPasswordInput);
+
                 if (isValidPassword)
                 {
                     var user = userManager.Users.FirstOrDefault(u => u.Username == UsernameInput);
@@ -254,35 +260,27 @@ namespace FitTracker.ViewModel
                 MessageBox.Show("Passwords do not match. Please try again.");
             }
         }
-
-        private RelayCommand signInCommand;
-        public RelayCommand SignInCommand
+        //Metod för att logga in
+        public void ExecuteSignIn(object parameter)
         {
-            get
-            {
-                if (signInCommand == null)
-                {
-                    signInCommand = new RelayCommand(ExecuteSignIn);
-                }
-                return signInCommand;
-            }
+            SignIn();
         }
-        
-        
         public void SignIn()
         {
             var user = userManager.Users.FirstOrDefault(u => u.Username == UsernameInput && u.Password == PasswordInput);
 
             if (user != null)
             {
+                //slumpar fram 6 siffrig kod för att skicka till användaren
                 Random twofa = new Random();
                 string doublecheck = twofa.Next(100000, 999999).ToString();
-                
+
                 MessageBox.Show($"You´ve got mail! Your 2FA code is {doublecheck}");
                 var twoFactorViewModel = new TwoFactorWindowViewModel(doublecheck);
                 var twoFactorWindow = new TwoFactorWindow(doublecheck) { DataContext = twoFactorViewModel };
 
-
+                //en funktion som känner av om userloggedin eventet från TwofactorViewModel fönstret triggas
+                //dvs rätt 2fa kod skrevs in. Isåfall körs koden och användaren loggas in
                 twoFactorViewModel.UserLoggedIn += () =>
                 {
                     user.SignIn();
@@ -299,11 +297,8 @@ namespace FitTracker.ViewModel
             {
                 MessageBox.Show("Wrong user or password");
             }
-        }
-            
-            public void ExecuteSignIn(object parameter)
-        {
-            SignIn();
+            #endregion
         }
     }
 }
+

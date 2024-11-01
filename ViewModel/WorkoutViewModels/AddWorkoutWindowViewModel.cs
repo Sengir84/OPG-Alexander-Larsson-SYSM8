@@ -11,8 +11,17 @@ namespace FitTracker.ViewModel.WorkoutViewModels
 {
     public class AddWorkoutWindowViewModel : ViewModelBase, IAddWorkoutWindow
     {
+        //Lista över träningstyper
         public ObservableCollection<string> WorkoutType { get; set; }
-        
+        //Konstruktor för att initiera träningstyper
+        public AddWorkoutWindowViewModel()
+        {
+            WorkoutType = new ObservableCollection<string> { "Strength", "Cardio" };
+            WorkoutTypeCombobox = WorkoutType.First();
+            UpdateWorkoutTypeVisibility();
+        }
+
+        //properties
         private string workoutTypeCombobox;
         public string WorkoutTypeCombobox
         {
@@ -46,82 +55,6 @@ namespace FitTracker.ViewModel.WorkoutViewModels
                 isCardioWorkout = value;
                 OnPropertyChanged(nameof(IsCardioWorkout));
             }
-        }
-        private void UpdateWorkoutTypeVisibility()
-        {
-            IsStrengthWorkout = WorkoutTypeCombobox == "Strength";
-            IsCardioWorkout = WorkoutTypeCombobox == "Cardio";
-        }
-
-        private RelayCommand saveWorkoutCommand;
-        public RelayCommand SaveWorkoutCommand
-        {
-            get
-            {
-                if (saveWorkoutCommand == null)
-                {
-                    saveWorkoutCommand ??= new RelayCommand(ExecuteSaveWorkout, CanSaveWorkout);
-                }
-                return saveWorkoutCommand;
-            }
-        }
-
-        private bool CanSaveWorkout(object obj)
-        {
-            bool isValid = DurationInput != TimeSpan.Zero &&
-                           CaloriesBurnedInput > 0 &&
-                           !string.IsNullOrWhiteSpace(NotesInput); 
-            
-            if (WorkoutTypeCombobox == "Strength")
-                
-            {
-                isValid &= !string.IsNullOrWhiteSpace(EquipmentInput) &&
-                 RepetitionsInput > 0;
-            }
-
-            
-            else if (WorkoutTypeCombobox == "Cardio")
-            {
-                isValid &= DistanceInput > 0;
-            }
-
-            IsValidationMessageVisible = !isValid;
-            return isValid;
-        }
-
-        private bool isValidationMessageVisible;
-        public bool IsValidationMessageVisible
-        {
-            get => isValidationMessageVisible;
-            set
-            {
-                if (isValidationMessageVisible != value)
-                {
-                    isValidationMessageVisible = value;
-                    OnPropertyChanged(nameof(IsValidationMessageVisible));
-                }
-            }
-        }
-
-        private RelayCommand returnCommand;
-
-        public RelayCommand ReturnCommand
-        {
-            get
-            {
-                if (returnCommand == null)
-                {
-                    returnCommand = new RelayCommand(ExecuteReturn);
-                }
-                return returnCommand;
-            }
-        }
-
-        public AddWorkoutWindowViewModel()
-        {
-            WorkoutType = new ObservableCollection<string>{"Strength","Cardio"};
-            WorkoutTypeCombobox = WorkoutType.First();
-            UpdateWorkoutTypeVisibility();
         }
 
         private TimeSpan durationInput;
@@ -158,18 +91,21 @@ namespace FitTracker.ViewModel.WorkoutViewModels
                 }
             }
         }
-        private void UpdateCaloriesBurnedInput()
+
+        private bool isValidationMessageVisible;
+        public bool IsValidationMessageVisible
         {
-            if (WorkoutTypeCombobox == "Strength")
+            get => isValidationMessageVisible;
+            set
             {
-                CaloriesBurnedInput = new StrengthWorkout(DateTime.Now, "Strength", DurationInput, 0, NotesInput, EquipmentInput, RepetitionsInput).CalculateCaloriesBurned();
-            }
-            else if (WorkoutTypeCombobox == "Cardio")
-            {
-                CaloriesBurnedInput = new CardioWorkout(DateTime.Now, "Cardio", DurationInput, 0, NotesInput, DistanceInput).CalculateCaloriesBurned();
+                if (isValidationMessageVisible != value)
+                {
+                    isValidationMessageVisible = value;
+                    OnPropertyChanged(nameof(IsValidationMessageVisible));
+                }
             }
         }
-        
+
         private string notesInput;
         public string NotesInput
         {
@@ -202,7 +138,7 @@ namespace FitTracker.ViewModel.WorkoutViewModels
                     CommandManager.InvalidateRequerySuggested();
                 }
             }
-             
+
         }
 
         private string equipmentInput;
@@ -236,12 +172,80 @@ namespace FitTracker.ViewModel.WorkoutViewModels
             }
 
         }
-        
+        //Relaycommands
+
+        private RelayCommand returnCommand;
+        public RelayCommand ReturnCommand
+        {
+            get
+            {
+                if (returnCommand == null)
+                {
+                    returnCommand = new RelayCommand(ExecuteReturn);
+                }
+                return returnCommand;
+            }
+        }
+
+        private RelayCommand saveWorkoutCommand;
+        public RelayCommand SaveWorkoutCommand
+        {
+            get
+            {
+                if (saveWorkoutCommand == null)
+                {
+                    saveWorkoutCommand ??= new RelayCommand(ExecuteSaveWorkout, CanSaveWorkout);
+                }
+                return saveWorkoutCommand;
+            }
+        }
+        //Metoder
+        //Metod för att välja BurnedCalories metod
+        private void UpdateCaloriesBurnedInput()
+        {
+            if (WorkoutTypeCombobox == "Strength")
+            {
+                CaloriesBurnedInput = new StrengthWorkout(DateTime.Now, "Strength", DurationInput, 0, NotesInput, EquipmentInput, RepetitionsInput).CalculateCaloriesBurned();
+            }
+            else if (WorkoutTypeCombobox == "Cardio")
+            {
+                CaloriesBurnedInput = new CardioWorkout(DateTime.Now, "Cardio", DurationInput, 0, NotesInput, DistanceInput).CalculateCaloriesBurned();
+            }
+        }
+        //Metod för att uppdatera kombobox
+        private void UpdateWorkoutTypeVisibility()
+        {
+            IsStrengthWorkout = WorkoutTypeCombobox == "Strength";
+            IsCardioWorkout = WorkoutTypeCombobox == "Cardio";
+        }
         private void ExecuteSaveWorkout(object obj)
         {
             SaveWorkout();
         }
+        //Metod för att kontrollera om det går att att spara workout
+        private bool CanSaveWorkout(object obj)
+        {
+            bool isValid = DurationInput != TimeSpan.Zero &&
+                           CaloriesBurnedInput > 0 &&
+                           !string.IsNullOrWhiteSpace(NotesInput);
 
+            if (WorkoutTypeCombobox == "Strength")
+
+            {
+                isValid &= !string.IsNullOrWhiteSpace(EquipmentInput) &&
+                 RepetitionsInput > 0;
+            }
+
+
+            else if (WorkoutTypeCombobox == "Cardio")
+            {
+                isValid &= DistanceInput > 0;
+            }
+
+            IsValidationMessageVisible = !isValid;
+            return isValid;
+        }
+        //Metod för att spara workout
         public void SaveWorkout()
         {
             WorkoutModel workout;
@@ -262,15 +266,13 @@ namespace FitTracker.ViewModel.WorkoutViewModels
                 return;
             }
             WorkoutManager.Instance.AddWorkout(workout);
-
-            
-            
         }
+
         private void ExecuteReturn(object obj)
         {
             Return();
         }
-
+        //Stänger fönstret
         private void Return()
         {
             if (App.Current.Windows.OfType<AddWorkoutWindow>().FirstOrDefault() is Window addWorkoutWindow)

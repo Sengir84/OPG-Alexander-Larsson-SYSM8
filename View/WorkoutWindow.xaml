@@ -8,10 +8,22 @@
         Title="WorkoutWindow" Height="600" Width="900" Background="Crimson">
     <Grid>
         <StackPanel>
+            <Button Content=" i" FontSize="20" Foreground="GhostWhite"
+        Command="{Binding ShowInfoCommand}">
+                <Button.Template>
+                    <ControlTemplate TargetType="Button">
+                        <Grid>
+                            <Ellipse Fill="Goldenrod" Width="20" Height="20" HorizontalAlignment="Right"/>
+                            <ContentPresenter HorizontalAlignment="Right" VerticalAlignment="Top" Width="18"/>
+                        </Grid>
+                    </ControlTemplate>
+                </Button.Template>
+            </Button>
+
             <TextBlock Text="{Binding User.Username}" Foreground="LightGray"  HorizontalAlignment="Right" FontSize="40"  />
             <TextBlock Text="FitTracker" FontSize="70" Foreground="LightGray" HorizontalAlignment="Center"/>
-            <Label Content="TRACKING FITNESS SINCE NOVEMBER 2024" FontWeight="Bold" HorizontalAlignment="Center" Foreground="LightGray"/>
-            <Button Content="Add workout" Command="{Binding AddWorkoutCommand}" Height="20" Background="Gray" Width="100" Margin="10"/>
+            <Label Content="TRACKING FITNESS SINCE NOVEMBER 2024" FontWeight="Bold" HorizontalAlignment="Center" Foreground="LightGray" Margin="10"/>
+            <Button Content="Add workout" Command="{Binding AddWorkoutCommand}" Height="20" Background="Gray" Width="100"/>
             <Button Content="Remove Workout" Command="{Binding RemoveWorkoutCommand}" Background="Gray" Width="100" Margin="10"/>
             <Button Content="User Details" Command="{Binding UserDetailsCommand}" Background="Gray" Width="100"/>
             <Button Content="Workout Details" Command="{Binding WorkoutDetailsCommand}" Background="Gray" Width="100" Margin="10"/>
@@ -24,9 +36,9 @@
                 <Label Content="Date" Width="300" Foreground="LightGray"/>
             </StackPanel>
             <StackPanel Orientation="Horizontal">
-                <TextBox Text="{Binding DurationFilter, UpdateSourceTrigger=PropertyChanged}" Width="300" Background="LightGray"/>
-                <TextBox Text="{Binding TypeFilter, UpdateSourceTrigger=PropertyChanged}" Width="300" Background="LightGray"/>
-                <DatePicker SelectedDate="{Binding DateFilter, UpdateSourceTrigger=PropertyChanged}" Width="300" Background="LightGray"/>
+                <TextBox Text="{Binding DurationFilter, UpdateSourceTrigger=PropertyChanged}" Width="299" Background="LightGray"/>
+                <TextBox Text="{Binding TypeFilter, UpdateSourceTrigger=PropertyChanged}" Width="299" Background="LightGray"/>
+                <DatePicker SelectedDate="{Binding DateFilter, UpdateSourceTrigger=PropertyChanged}" Width="299" Background="LightGray"/>
             </StackPanel>
             <Label Content="Your Wokouts" FontWeight="Bold" Foreground="LightGray"/>
             <DataGrid
