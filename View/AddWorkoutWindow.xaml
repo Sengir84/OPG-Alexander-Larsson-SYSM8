@@ -4,41 +4,41 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:FitTracker.View"
         xmlns:workout="clr-namespace:FitTracker.ViewModel.WorkoutViewModels" 
-        
-        Title="AddWorkoutWindow" Height="550" Width="800">
+        Title="AddWorkoutWindow" Height="550" Width="800" Background="Crimson">
     <Window.Resources>
         <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
     </Window.Resources>
 
     <Grid>
         <StackPanel>
-            <TextBlock Text="ADD WORKOUT" FontSize="100"/>
-            <Label Content="Type"/>
+            <!--Generella fält-->
+            <TextBlock Text="ADD WORKOUT" FontSize="70" Foreground="LightGray"/>
+            <Label Content="Type" Foreground="LightGray"/>
             <ComboBox ItemsSource="{Binding WorkoutType}" SelectedItem="{Binding WorkoutTypeCombobox, Mode=TwoWay}"/>
-            <Label Content="Duration"/>
+            <Label Content="Duration" Foreground="LightGray"/>
             <TextBox Text="{Binding DurationInput, UpdateSourceTrigger=PropertyChanged}"/>
-                    <!-- Strength Workout -->
+            <!-- Strength Workout -->
             <StackPanel Visibility="{Binding IsStrengthWorkout, Converter={StaticResource BooleanToVisibilityConverter}}">
-                <Label Content="Equipment"/>
+                <Label Content="Equipment" Foreground="LightGray"/>
                 <TextBox Text="{Binding EquipmentInput, UpdateSourceTrigger=PropertyChanged}" />
-                <Label Content="Repetitions"/>
+                <Label Content="Repetitions" Foreground="LightGray"/>
                 <TextBox Text="{Binding RepetitionsInput, UpdateSourceTrigger=PropertyChanged}"/>
             </StackPanel>
-            
-                    <!-- Cardio Workout -->
+
+            <!-- Cardio Workout -->
             <StackPanel Visibility="{Binding IsCardioWorkout, Converter={StaticResource BooleanToVisibilityConverter}}">
-                <Label Content="Distance"/>
+                <Label Content="Distance" Foreground="LightGray"/>
                 <TextBox Text="{Binding DistanceInput, UpdateSourceTrigger=PropertyChanged}"/>
             </StackPanel>
-            
-            <Label Content="Calories"/>
+            <!--Generella fält-->
+            <Label Content="Calories" Foreground="LightGray"/>
             <TextBox Text="{Binding CaloriesBurnedInput, UpdateSourceTrigger=PropertyChanged}" IsReadOnly = "True" />
-            <Label Content="Notes"/>
+            <Label Content="Notes" Foreground="LightGray"/>
             <TextBox Text="{Binding NotesInput, UpdateSourceTrigger=PropertyChanged}"/>
-            <Label Content="ALL FIELDS NEED TO BE FILLED" Visibility="{Binding IsValidationMessageVisible, Converter={StaticResource BooleanToVisibilityConverter}}" HorizontalAlignment="Center" Foreground="Red"/>
-            <Button Content="Save" Command="{Binding SaveWorkoutCommand}"/>
-            <Button Content="Return to Workouts" Command="{Binding ReturnCommand}"/>
-            
+            <Label Content="ALL FIELDS NEED TO BE FILLED CORRECTLY" Visibility="{Binding IsValidationMessageVisible, Converter={StaticResource BooleanToVisibilityConverter}}" HorizontalAlignment="Center" Foreground="LightGray"/>
+            <Button Content="Save" Command="{Binding SaveWorkoutCommand}" Width="100" Background="Gray"/>
+            <Button Content="Return to Workouts" Command="{Binding ReturnCommand}" Width="100" Background="Gray" Margin="10"/>
+
         </StackPanel>
     </Grid>
 </Window>

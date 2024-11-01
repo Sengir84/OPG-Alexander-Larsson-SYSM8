@@ -5,12 +5,12 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:FitTracker.View"
         mc:Ignorable="d"
-        Title="TwoFactorWindow" Height="450" Width="800">
+        Title="TwoFactorWindow" Height="200" Width="400" Background="Crimson">
     <Grid>
-        <StackPanel >
-            <TextBlock Text="Enter the 2FA code:" HorizontalAlignment="Center"/>
-            <TextBox Text="{Binding TwoFactorInput, UpdateSourceTrigger=PropertyChanged}"/>
-            <Button Content="Submit" Command="{Binding SubmitCommand}" />
-        </StackPanel>
+        
+            <TextBlock Text="Enter your 2FA code:" FontSize="25" VerticalAlignment="Top" HorizontalAlignment="Center" Foreground="LightGray"/>
+            <TextBox Text="{Binding TwoFactorInput, UpdateSourceTrigger=PropertyChanged}" Width="100" VerticalAlignment="Center"/>
+            <Button Content="Submit" Command="{Binding SubmitCommand}" VerticalAlignment="Bottom" Width="100" Background="Gray" Margin="10"/>
+        
     </Grid>
 </Window>

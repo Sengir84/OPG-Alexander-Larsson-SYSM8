@@ -19,7 +19,7 @@
             <Button Content="Sign in" Command="{Binding SignInCommand}" Width="100" Margin="10" Background="Gray"/>
             <Button Content="Register" Command="{Binding RegisterCommand}" Width="100" Background="Gray"/>
             <Button Content="Forgot Password" Command="{Binding ForgotPasswordCommand}" Width ="100" Margin="10" Background="Gray"/>
-            
+
             <!--Dessa fält är dolda fram tills man trycker forgot password och är till för Säkerhetsfrågor och återställning av lösenord-->
 
             <TextBlock Text="Sequrity Question" Visibility="{Binding IsQuestionVisible, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource BooleanToVisibilityConverter}}" Background="Crimson" Foreground="LightGray" HorizontalAlignment="Center"/>
@@ -27,7 +27,7 @@
             <TextBlock Text="Answer" Visibility="{Binding IsQuestionVisible, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource BooleanToVisibilityConverter}}" Background="Crimson" Foreground="LightGray" HorizontalAlignment="Center"/>
             <TextBox Text="{Binding SecurityAnswerInput}" Visibility="{Binding IsQuestionVisible, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource BooleanToVisibilityConverter}}" Background="LightGray" Width="200"/>
             <Button Content="Submit Answer" Command="{Binding ChangePasswordCommand}" Visibility="{Binding IsQuestionVisible, Converter={StaticResource BooleanToVisibilityConverter}}" Background="Gray" Width=" 100" Margin="10" />
-            
+
             <!--Dessa fält är dolda fram tills man svarat rätt på sequrity question och är till för att spara ett nytt lösenord-->
 
             <TextBlock Text="New Password" Visibility="{Binding IsPasswordResetVisible, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource BooleanToVisibilityConverter}}" Background="Crimson" Foreground="LightGray" HorizontalAlignment="Center"/>
@@ -36,7 +36,7 @@
             <PasswordBox x:Name="ConfirmPasswordBox" PasswordChanged="ConfirmPasswordBox_PasswordChanged" Visibility="{Binding IsPasswordResetVisible, Converter={StaticResource BooleanToVisibilityConverter}}" Background="LightGray" Width = "200"/>
 
             <Button Content="Change Password" Command="{Binding ResetPasswordCommand}" Visibility="{Binding IsPasswordResetVisible, Converter={StaticResource BooleanToVisibilityConverter}}" Background="Gray" Width="200"/>
-            
+
         </StackPanel>
     </Grid>
 </Window>

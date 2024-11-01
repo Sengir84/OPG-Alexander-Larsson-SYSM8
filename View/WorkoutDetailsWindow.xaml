@@ -5,41 +5,41 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:FitTracker.View__UI_"
         mc:Ignorable="d"
-        Title="WorkoutDetailsWindow" Height="450" Width="800">
+        Title="WorkoutDetailsWindow" Height="450" Width="800" Background="Crimson">
     <Window.Resources>
         <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
     </Window.Resources>
 
     <Grid>
         <StackPanel>
-            <Label Content="Type"/>
+            <Label Content="Type" Foreground="LightGray"/>
             <TextBox Text="{Binding Workout.Type, UpdateSourceTrigger=PropertyChanged}" IsReadOnly="{Binding IsTextBoxReadOnly}"/>
-            <Label Content="Date"/>
+            <Label Content="Date" Foreground="LightGray"/>
             <TextBox Text="{Binding Workout.Date, UpdateSourceTrigger=PropertyChanged}" IsReadOnly="{Binding IsTextBoxReadOnly}"/>
-            <Label Content="Duration"/>
+            <Label Content="Duration" Foreground="LightGray"/>
             <TextBox Text="{Binding Workout.Duration, UpdateSourceTrigger=PropertyChanged}" IsReadOnly="{Binding IsTextBoxReadOnly}"/>
                        
             <!-- Strength Workout -->
             <StackPanel Visibility="{Binding IsStrengthWorkoutVisible, Converter={StaticResource BooleanToVisibilityConverter}}">
-                <Label Content="Equipment"/>
+                <Label Content="Equipment" Foreground="LightGray"/>
                 <TextBox Text="{Binding Workout.Equipment, UpdateSourceTrigger=PropertyChanged}" IsReadOnly="{Binding IsTextBoxReadOnly}"/>
-                <Label Content="Repetitions"/>
+                <Label Content="Repetitions" Foreground="LightGray"/>
                 <TextBox Text="{Binding Workout.Repetitions, UpdateSourceTrigger=PropertyChanged}" IsReadOnly="{Binding IsTextBoxReadOnly}"/>
             </StackPanel>
             
             <!-- Cardio Workout -->
             <StackPanel Visibility="{Binding IsCardioWorkoutVisible, Converter={StaticResource BooleanToVisibilityConverter}}">
-                <Label Content="Distance"/>
+                <Label Content="Distance" Foreground="LightGray"/>
                 <TextBox Text="{Binding Workout.Distance, UpdateSourceTrigger=PropertyChanged}" IsReadOnly="{Binding IsTextBoxReadOnly}"/>
             </StackPanel>
 
-            <Label Content="Calories"/>
+            <Label Content="Calories" Foreground="LightGray"/>
             <TextBox Text="{Binding Workout.CaloriesBurned, UpdateSourceTrigger=PropertyChanged}" IsReadOnly="{Binding IsTextBoxReadOnly}"/>
-            <Label Content="Notes"/>
+            <Label Content="Notes" Foreground="LightGray"/>
             <TextBox Text="{Binding Workout.Notes, UpdateSourceTrigger=PropertyChanged}" IsReadOnly="{Binding IsTextBoxReadOnly}"/>
-            <Button Content="Edit" Command="{Binding EditWorkoutCommand}"/>
-            <Button Content="Save" Command="{Binding SaveWorkoutCommand}"/>
-            <Button Content="Copy Workout" Command="{Binding CopyWorkoutCommand}"/>
+            <Button Content="Edit" Command="{Binding EditWorkoutCommand}" Width="100" Margin="10" Background="Gray"/>
+            <Button Content="Save and exit" Command="{Binding SaveWorkoutCommand}" Width="100" Background="Gray"/>
+            <Button Content="Copy Workout" Command="{Binding CopyWorkoutCommand}" Width="100" Background="Gray" Margin="10"/>
         </StackPanel>
     </Grid>
 </Window>

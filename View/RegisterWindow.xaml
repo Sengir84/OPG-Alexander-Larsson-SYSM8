@@ -5,19 +5,25 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:FitTracker.View__UI_" xmlns:ViewModel="clr-namespace:FitTracker.ViewModel" d:DataContext="{d:DesignInstance Type=ViewModel:MainWindowViewModel}"
         mc:Ignorable="d"
-        Title="RegisterWindow" Height="450" Width="800">
+        Title="RegisterWindow" Height="450" Width="800" Background="Crimson">
     <Grid>
         <StackPanel>
-            <TextBlock Text="REGISTER" FontSize="80"/>
-            <TextBox Text="{Binding UsernameInput, UpdateSourceTrigger=PropertyChanged}"/>
-            <PasswordBox PasswordChanged="PasswordBox_PasswordChanged"/>
-            <PasswordBox PasswordChanged="ConfirmPasswordBox_PasswordChanged"/>
-            <ComboBox ItemsSource="{Binding Countries}" SelectedItem="{Binding CountryComboBox}"/>
-            <ComboBox ItemsSource="{Binding SecurityQuestionList}" SelectedItem="{Binding SecurityQuestion}"/>
-            <TextBox Text="{Binding SecurityAnswer}"/>
-            <Button Content="Register" Command="{Binding AddUserCommand}" Height="20"/>
-            
+            <TextBlock Text="REGISTER" FontSize="80" Foreground="LightGray"/>
+            <Label Content="Username" Foreground="LightGray"/>
+            <TextBox Text="{Binding UsernameInput, UpdateSourceTrigger=PropertyChanged}" Background="LightGray"/>
+            <Label Content="Password" Foreground="LightGray"/>
+            <PasswordBox PasswordChanged="PasswordBox_PasswordChanged" Background="LightGray"/>
+            <Label Content="Confirm password" Foreground="LightGray"/>
+            <PasswordBox PasswordChanged="ConfirmPasswordBox_PasswordChanged" Background="LightGray"/>
+            <Label Content="Country" Foreground="LightGray"/>
+            <ComboBox ItemsSource="{Binding Countries}" SelectedItem="{Binding CountryComboBox}" Background="LightGray"/>
+            <Label Content="Security question" Foreground="LightGray"/>
+            <ComboBox ItemsSource="{Binding SecurityQuestionList}" SelectedItem="{Binding SecurityQuestion}" Background="LightGray"/>
+            <Label Content="Security Answer" Foreground="LightGray"/>
+            <TextBox Text="{Binding SecurityAnswer}" Background="LightGray"/>
+            <Button Content="Register" Command="{Binding AddUserCommand}" Width="100" Height="20" Background="Gray" Margin="10"/>
+
         </StackPanel>
-        
+
     </Grid>
 </Window>
