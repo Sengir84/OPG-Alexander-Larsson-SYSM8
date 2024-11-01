@@ -105,11 +105,11 @@ namespace FitTracker.Model__Produkter_
         }
         public bool ValidPassword(string password)
         {
-            if (password.Length < 8)
+            if (string.IsNullOrEmpty(password) || password.Length < 8)
             {
                 return false;
             }
-            bool checkSpecChar = password.Any(ch => !char.IsDigit(ch));
+            bool checkSpecChar = password.Any(ch => !char.IsLetterOrDigit(ch));
             return checkSpecChar;
         }
 

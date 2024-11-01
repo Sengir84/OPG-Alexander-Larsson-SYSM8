@@ -38,7 +38,7 @@ namespace FitTracker
             if (TwoFactorInput == expectedCode)
             {
                 UserLoggedIn?.Invoke();
-                MessageBox.Show("2FA code verified.");
+                
                 if (App.Current.Windows.OfType<TwoFactorWindow>().FirstOrDefault() is Window twoFactorWindow)
                 {
                     twoFactorWindow.Close();

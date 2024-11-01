@@ -9,6 +9,7 @@ namespace FitTracker.Model__Produkter_
 {
     public class AdminUser : User, IAdminUser
     {
+        //Metod för att admins ska få upp alla användares workouts i sin lista
         public void ManageAllWorkouts()
         {
             WorkoutManager.Instance.PopulateAllWorkouts();

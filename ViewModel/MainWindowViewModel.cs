@@ -161,16 +161,15 @@ namespace FitTracker.ViewModel
 
             if (currentUser != null)
             {
-                
                 SecurityQuestion = currentUser.SecurityQuestion;
                 IsQuestionVisible = true;  
             }
             else
             {
-                MessageBox.Show("User not found");
+                MessageBox.Show("Enter username in user field before pushing the button");
             }
         }
-
+        
         private void ExecuteChangePassword(object obj)
         {
             var currentUser = userManager.Users.FirstOrDefault(u => u.Username == UsernameInput);
@@ -214,62 +213,45 @@ namespace FitTracker.ViewModel
 
         private void ExecuteResetPassword(object obj)
         {
+            ResetPassword(); 
+        }
+
+        private void ResetPassword()
+        {
             if (NewPasswordInput == ConfirmPasswordInput)
             {
-                var user = userManager.Users.FirstOrDefault(u => u.Username == UsernameInput);
 
-                if (user != null)
+                //var user = userManager.Users.FirstOrDefault(u => u.Username == UsernameInput);
+
+                bool isValidPassword = userManager.ValidPassword(NewPasswordInput);
+                if (isValidPassword)
                 {
-                    
-                    user.ResetPassword(NewPasswordInput);
-                    MessageBox.Show("Password reset successful. Please log in with your new password.");
-                    
-                    NewPasswordInput = string.Empty;
-                    ConfirmPasswordInput = string.Empty;
-                    IsPasswordResetVisible = false;  
-                    IsQuestionVisible = false;  
+                    var user = userManager.Users.FirstOrDefault(u => u.Username == UsernameInput);
+
+                    if (user != null)
+                    {
+                        user.ResetPassword(NewPasswordInput);
+                        MessageBox.Show("Password reset successful. Please log in with your new password.");
+
+                        NewPasswordInput = string.Empty;
+                        ConfirmPasswordInput = string.Empty;
+                        IsPasswordResetVisible = false;
+                        IsQuestionVisible = false;
+
+                    }
+                    else
+                    {
+                        MessageBox.Show("Username not found.");
+                    }
                 }
                 else
                 {
-                    MessageBox.Show("Username not found.");
+                    MessageBox.Show("Password must be at least 8 characters long and contain at least one special character.");
                 }
             }
             else
             {
                 MessageBox.Show("Passwords do not match. Please try again.");
-            }
-        }
-        
-        private void ResetPassword()
-        {
-            var user = userManager.Users.FirstOrDefault(u => u.Username == UsernameInput);
-
-            if (user != null)
-            {
-                SecurityQuestion = user.SecurityQuestion;
-
-                if (user.VerifySecurityAnswer(SecurityAnswerInput))
-                {
-                    
-                    if (!string.IsNullOrEmpty(NewPasswordInput) && NewPasswordInput == ConfirmPasswordInput)
-                    {
-                        user.ResetPassword(NewPasswordInput);
-                        MessageBox.Show("Password reset successful. Please log in with your new password.");
-                        
-                    }
-                    else
-                    {
-                        MessageBox.Show("Passwords do not match. Please try again.");
-                    }
-                }
-                else
-                {
-                    MessageBox.Show("Security answer incorrect. Please try again.");
-                }
-            }
-            else
-            {
-                MessageBox.Show("Username not found.");
             }
         }
 
