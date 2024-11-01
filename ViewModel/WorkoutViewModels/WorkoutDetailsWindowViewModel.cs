@@ -199,7 +199,7 @@ namespace FitTracker.ViewModel.WorkoutViewModels
 
             else if (Workout is StrengthWorkout strengthWorkout)
             {
-                if (string.IsNullOrWhiteSpace(strengthWorkout.Equipment) || strengthWorkout.Repetitions <= 0) // Ensure Equipment is not empty and Repetitions > 0
+                if (string.IsNullOrWhiteSpace(strengthWorkout.Equipment) || strengthWorkout.Repetitions <= 0) 
                 {
                     isValid = false;
                 }

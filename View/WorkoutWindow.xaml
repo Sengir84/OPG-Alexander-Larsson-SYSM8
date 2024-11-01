@@ -7,8 +7,6 @@
         mc:Ignorable="d"
         Title="WorkoutWindow" Height="450" Width="900">
     <Grid>
-        
-        
         <StackPanel>
             <TextBlock Text="{Binding User.Username}" Width=" 100" HorizontalAlignment="Right"/>
             <TextBlock Text="WORKOUT" FontSize="100"/>
@@ -34,7 +32,7 @@
                 AutoGenerateColumns="False"
                 CanUserAddRows="False"
                 CanUserDeleteRows="False"
-                ItemsSource="{Binding WorkoutList}"
+                ItemsSource="{Binding WorkoutList}" 
                 SelectedItem="{Binding SelectedWorkout}">
                 <DataGrid.Columns>
                     <DataGridTextColumn

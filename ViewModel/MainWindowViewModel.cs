@@ -1,8 +1,9 @@
 ﻿using FitTracker.Model__Produkter_;
 using FitTracker.MVVM;
-
+using FitTracker.View;
 using FitTracker.View__UI_;
 using FitTracker.ViewModel.WorkoutViewModels;
+using System;
 using System.Windows;
 using System.Windows.Controls;
 
@@ -16,12 +17,8 @@ namespace FitTracker.ViewModel
         public MainWindowViewModel(UserManager userManager)
         {
             this.userManager = userManager;
-            
-            //------------------TA BORT-------------------
-#if DEBUG
-            //this.usernameInput = "Alex";
-            //this.passwordInput = "Alexander!";
-#endif
+            FontFamily = "Arial";
+
         }
         public RelayCommand AddUserCommand { get; }
         public string LabelTitle { get; set; }
@@ -40,6 +37,18 @@ namespace FitTracker.ViewModel
                 }
             }
         }
+        private string fontFamily;
+
+        public string FontFamily
+        {
+            get { return fontFamily; }
+            set
+            {
+                fontFamily = value;
+                OnPropertyChanged(nameof(FontFamily));
+            }
+        }
+
         
         private string usernameInput;
         public string UsernameInput
@@ -102,6 +111,8 @@ namespace FitTracker.ViewModel
             var passwordBox = sender as PasswordBox;
             ConfirmPasswordInput = passwordBox.Password;  
         }
+        
+        
 
         private bool isQuestionVisible;
         public bool IsQuestionVisible
@@ -274,23 +285,37 @@ namespace FitTracker.ViewModel
                 return signInCommand;
             }
         }
-            
+        
+        
         public void SignIn()
         {
             var user = userManager.Users.FirstOrDefault(u => u.Username == UsernameInput && u.Password == PasswordInput);
 
             if (user != null)
-               
             {
-                user.SignIn();
-                var workoutWindowViewModel = new WorkoutWindowViewModel(WorkoutManager.Instance);
-                var workoutWindow = new WorkoutWindow { DataContext = workoutWindowViewModel };
-                workoutWindow.Show();
-                App.Current.Windows[0].Close();
-            }  
+                Random twofa = new Random();
+                string doublecheck = twofa.Next(100000, 999999).ToString();
+                
+                MessageBox.Show($"You´ve got mail! Your 2FA code is {doublecheck}");
+                var twoFactorViewModel = new TwoFactorWindowViewModel(doublecheck);
+                var twoFactorWindow = new TwoFactorWindow(doublecheck) { DataContext = twoFactorViewModel };
+
+
+                twoFactorViewModel.UserLoggedIn += () =>
+                {
+                    user.SignIn();
+                    var workoutWindowViewModel = new WorkoutWindowViewModel(WorkoutManager.Instance);
+                    var workoutWindow = new WorkoutWindow { DataContext = workoutWindowViewModel };
+                    workoutWindow.Show();
+                    App.Current.Windows[0].Close();
+                };
+
+                twoFactorWindow.ShowDialog();
+            }
+
             else
             {
-                MessageBox.Show("Fel user eller lösen");
+                MessageBox.Show("Wrong user or password");
             }
         }
             

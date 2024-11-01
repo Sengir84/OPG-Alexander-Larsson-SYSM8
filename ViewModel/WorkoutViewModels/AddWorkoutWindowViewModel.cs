@@ -1,7 +1,9 @@
 ﻿using FitTracker.Model__Produkter_;
 using FitTracker.MVVM;
 using FitTracker.View;
+using FitTracker.View__UI_;
 using System.Collections.ObjectModel;
+using System.Diagnostics;
 using System.Windows;
 using System.Windows.Input;
 
@@ -84,7 +86,6 @@ namespace FitTracker.ViewModel.WorkoutViewModels
             }
 
             IsValidationMessageVisible = !isValid;
-
             return isValid;
         }
 
@@ -235,6 +236,7 @@ namespace FitTracker.ViewModel.WorkoutViewModels
             }
 
         }
+        
         private void ExecuteSaveWorkout(object obj)
         {
             SaveWorkout();
@@ -259,8 +261,10 @@ namespace FitTracker.ViewModel.WorkoutViewModels
                 MessageBox.Show("Must choose a workout type");
                 return;
             }
+            WorkoutManager.Instance.AddWorkout(workout);
+
             
-             WorkoutManager.Instance.AddWorkout(workout);
+            
         }
         private void ExecuteReturn(object obj)
         {

@@ -14,7 +14,6 @@ namespace FitTracker.View
             InitializeComponent();
 
             DataContext = new AddWorkoutWindowViewModel();
-            
         }
     }
 }

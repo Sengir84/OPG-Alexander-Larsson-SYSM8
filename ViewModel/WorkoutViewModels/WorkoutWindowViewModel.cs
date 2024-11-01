@@ -9,6 +9,7 @@ namespace FitTracker.ViewModel.WorkoutViewModels
 {
     public class WorkoutWindowViewModel : ViewModelBase, IWorkoutsWindow
     {
+
         private readonly UserManager userManager;
         public IUser User { get; }
 
@@ -23,8 +24,9 @@ namespace FitTracker.ViewModel.WorkoutViewModels
             if (userManager.ActiveUser is AdminUser)
             {
                 workoutManager.PopulateAllWorkouts();
-
             }
+
+            WorkoutManager.Instance.OnWorkoutAdded += UpdateWorkoutList;
         }
         #endregion
 
@@ -75,7 +77,6 @@ namespace FitTracker.ViewModel.WorkoutViewModels
             }
         }
 
-
         private ObservableCollection<IWorkout> workoutList;
         public ObservableCollection<IWorkout> WorkoutList
         {
@@ -87,6 +88,8 @@ namespace FitTracker.ViewModel.WorkoutViewModels
             }
 
         }
+
+        
         private ObservableCollection<IWorkout> allWorkouts;
         public ObservableCollection<IWorkout> AllWorkouts
         {
@@ -178,7 +181,7 @@ namespace FitTracker.ViewModel.WorkoutViewModels
         #endregion
 
         #region Methods
-
+        
         private void UpdateWorkoutList()
         {
             IEnumerable<IWorkout> filteredWorkouts;
@@ -188,7 +191,7 @@ namespace FitTracker.ViewModel.WorkoutViewModels
             }
             else
             {
-                filteredWorkouts = userManager.ActiveUser?.Workouts ?? new ObservableCollection<IWorkout>(); // Regular users see their workouts
+                filteredWorkouts = userManager.ActiveUser?.Workouts ?? new ObservableCollection<IWorkout>(); 
             }
 
             if (DurationFilter.HasValue)
@@ -224,7 +227,7 @@ namespace FitTracker.ViewModel.WorkoutViewModels
 
         public void UserDetails()
         {
-            var userDetailsWindow = new UserDetailsWindow();
+            var userDetailsWindow = new UserDetailsWindow(userManager);
 
             userDetailsWindow.Show();
         }
@@ -240,6 +243,7 @@ namespace FitTracker.ViewModel.WorkoutViewModels
             var addworkoutWindow = new AddWorkoutWindow();
             addworkoutWindow.Show();
 
+            
         }
         public void ExecuteRemoveWorkout(object obj)
         {
@@ -264,6 +268,7 @@ namespace FitTracker.ViewModel.WorkoutViewModels
             {
                 var workoutDetailsWindow = new WorkoutDetailsWindow(SelectedWorkout);
                 workoutDetailsWindow.Show();
+
                 if (App.Current.Windows.OfType<WorkoutWindow>().FirstOrDefault() is Window workoutWindow)
                 {
                     workoutWindow.Close();

@@ -1,4 +1,5 @@
 ﻿using FitTracker.Model__Produkter_;
+using FitTracker.View__UI_;
 using FitTracker.ViewModel;
 
 using System.Text;
@@ -24,6 +25,7 @@ namespace FitTracker
             InitializeComponent();
             MainWindowViewModel mainWindowViewModel = new MainWindowViewModel(UserManager.Instance);
             DataContext = mainWindowViewModel;
+
         }
 
         private void PasswordInput(object sender, RoutedEventArgs e)
@@ -52,5 +54,6 @@ namespace FitTracker
                 viewModel.ConfirmPasswordInput = passwordBox.Password;
             }
         }
+        
     }
 }

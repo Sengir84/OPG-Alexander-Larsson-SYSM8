@@ -24,6 +24,7 @@ namespace FitTracker.Model__Produkter_
             }
         }
         public ObservableCollection<IWorkout> AllWorkouts { get; private set; } = new ObservableCollection<IWorkout>();
+
         public void PopulateAllWorkouts()
         {
             AllWorkouts.Clear();
@@ -35,12 +36,17 @@ namespace FitTracker.Model__Produkter_
                 }
             }
         }
+
+        public event Action OnWorkoutAdded;
+
         public void AddWorkout(IWorkout workout)
         {
             if (UserManager.Instance.ActiveUser != null)
             {
                 UserManager.Instance.ActiveUser.Workouts.Add(workout);
-                AllWorkouts.Add(workout); 
+                AllWorkouts.Add(workout);
+                OnWorkoutAdded?.Invoke();
+                
             }
         }
 
