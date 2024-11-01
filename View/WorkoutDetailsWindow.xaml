@@ -15,7 +15,7 @@
         <StackPanel>
             <!--Generella fält-->
             <Label Content="Type" Foreground="LightGray"/>
-            <TextBox Text="{Binding Workout.Type, UpdateSourceTrigger=PropertyChanged}" IsReadOnly="{Binding IsTextBoxReadOnly}"/>
+            <TextBox Text="{Binding Workout.Type, UpdateSourceTrigger=PropertyChanged}" IsReadOnly="True"/>
             <Label Content="Date" Foreground="LightGray"/>
             <TextBox Text="{Binding Workout.Date, UpdateSourceTrigger=PropertyChanged}" IsReadOnly="{Binding IsTextBoxReadOnly}"/>
             <Label Content="Duration" Foreground="LightGray"/>
